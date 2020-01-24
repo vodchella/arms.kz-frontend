@@ -90,9 +90,9 @@ const Header = ({ props }) => {
 
 
 const DrawerNavigation = createDrawerNavigator({
-    WorkoutsScreen: {screen: WorkoutsScreen, title: '!!!'},
-    StatisticsScreen: {screen: StatisticsScreen},
-    WelcomeScreen: { screen: WelcomeScreen },
+    WorkoutsScreen: { screen: WorkoutsScreen, navigationOptions: { title: 'Тренировки' } },
+    StatisticsScreen: { screen: StatisticsScreen, navigationOptions: { title: 'Статистика' } },
+    WelcomeScreen: { screen: WelcomeScreen, navigationOptions: { title: 'Об arms.kz' } },
 }, {
     headerMode: 'float',
     initialRouteName: 'WelcomeScreen',
