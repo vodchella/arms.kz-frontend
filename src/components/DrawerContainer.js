@@ -3,6 +3,7 @@ import {
     SafeAreaView,
     ScrollView,
     Text,
+    Image,
 } from 'react-native'
 import { DrawerItems } from 'react-navigation-drawer'
 
@@ -12,7 +13,10 @@ const DrawerContainer = (props) => {
             <SafeAreaView
                 forceInset={{ top: 'always', horizontal: 'never' }}
             >
-                <Text>Arms.kz</Text>
+                <Image
+                    style={{ alignSelf: 'center' }}
+                    source={require('../../android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png')}
+                />
                 <DrawerItems {...props} />
             </SafeAreaView>
         </ScrollView>
