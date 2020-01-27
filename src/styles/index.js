@@ -1,22 +1,22 @@
 import { StyleSheet } from 'react-native'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
+import * as Colors from '../constants/Colors'
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.BACKGROUND,
         alignItems: 'center',
         justifyContent: 'center',
     },
     scrollView: {
-        backgroundColor: Colors.lighter,
+        backgroundColor: Colors.BACKGROUND,
     },
     engine: {
         position: 'absolute',
         right: 0,
     },
     body: {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.BACKGROUND,
     },
     sectionContainer: {
         marginTop: 32,
@@ -25,24 +25,16 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 24,
         fontWeight: '600',
-        color: Colors.black,
+        color: Colors.ON_BACKGROUND,
     },
     sectionDescription: {
         marginTop: 8,
         fontSize: 18,
         fontWeight: '400',
-        color: Colors.dark,
+        color: Colors.ON_BACKGROUND,
     },
     highlight: {
         fontWeight: '700',
-    },
-    footer: {
-        color: Colors.dark,
-        fontSize: 12,
-        fontWeight: '600',
-        padding: 4,
-        paddingRight: 12,
-        textAlign: 'right',
     },
 })
 

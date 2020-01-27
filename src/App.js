@@ -10,6 +10,7 @@ import WorkoutsScreen from './screens/WorkoutsScreen'
 import StatisticsScreen from './screens/StatisticsScreen'
 import DrawerContainer from './components/DrawerContainer'
 import Header from './components/Header'
+import * as Colors from './constants/Colors'
 
 
 const DrawerNavigation = createDrawerNavigator({
@@ -21,10 +22,15 @@ const DrawerNavigation = createDrawerNavigator({
     initialRouteName: 'WelcomeScreen',
     contentComponent: DrawerContainer,
     drawerType: 'front',
+    contentOptions: {
+        activeTintColor: Colors.PRIMARY,
+        inactiveTintColor: Colors.ON_BACKGROUND,
+
+    },
     navigationOptions: ({ navigation }) => ({
-        headerStyle: {backgroundColor: '#4C3E54'},
+        headerStyle: {backgroundColor: Colors.SURFACE},
         headerTitle: () => <Header props={{navigation}}/>,
-        headerTintColor: 'white',
+        headerTintColor: Colors.ON_BACKGROUND,
     })
 })
 

@@ -6,10 +6,13 @@ import {
     Image,
 } from 'react-native'
 import { DrawerItems } from 'react-navigation-drawer'
+import * as Colors from '../constants/Colors'
 
 const DrawerContainer = (props) => {
     return(
-        <ScrollView>
+        <ScrollView
+            style={{ backgroundColor: Colors.BACKGROUND }}
+        >
             <SafeAreaView
                 forceInset={{ top: 'always', horizontal: 'never' }}
             >
@@ -17,7 +20,9 @@ const DrawerContainer = (props) => {
                     style={{ alignSelf: 'center' }}
                     source={require('../../android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png')}
                 />
-                <DrawerItems {...props} />
+                <DrawerItems
+                    {...props}
+                />
             </SafeAreaView>
         </ScrollView>
     )

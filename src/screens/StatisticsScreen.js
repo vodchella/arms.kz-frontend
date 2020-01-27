@@ -9,7 +9,7 @@ import styles from '../styles'
 
 const StatisticsScreen = () => {
     return (<>
-        <SafeAreaView>
+        <SafeAreaView style={{ height: '100%' }}>
             <ScrollView contentInsetAdjustmentBehavior='automatic' style={styles.scrollView}>
                 <View style={styles.body}>
                     <View style={styles.sectionContainer}>

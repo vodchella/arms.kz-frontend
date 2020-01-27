@@ -6,10 +6,11 @@ import {
     Text,
 } from 'react-native'
 import styles from '../styles'
+import * as Colors from '../constants/Colors'
 
 const WelcomeScreen = () => {
     return (<>
-        <SafeAreaView>
+        <SafeAreaView style={{ height: '100%' }}>
             <ScrollView contentInsetAdjustmentBehavior='automatic' style={styles.scrollView}>
                 <View style={styles.body}>
                     <View style={styles.sectionContainer}>
