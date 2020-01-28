@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from 'native-base'
 import IconForButton from './IconForButton'
 
-const HeaderComponenet = ({ props }) => {
+const HeaderComponent = ({ props }) => {
     const { navigation } = props
     return (<>
         <Button
@@ -16,4 +16,4 @@ const HeaderComponenet = ({ props }) => {
     </>)
 }
 
-export default HeaderComponenet
+export default HeaderComponent
