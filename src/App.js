@@ -5,6 +5,9 @@ import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createDrawerNavigator } from 'react-navigation-drawer'
 import { connect, Provider } from 'react-redux'
+import { StyleProvider } from 'native-base'
+import getTheme from './styles/native-base-theme/components';
+import themeArms from './styles/native-base-theme/variables/arms'
 import WelcomeScreen from './screens/WelcomeScreen'
 import WorkoutsScreen from './screens/WorkoutsScreen'
 import StatisticsScreen from './screens/StatisticsScreen'
@@ -63,7 +66,9 @@ const App = () => {
     return (
         <Provider store={store}>
             <StatusBar barStyle='dark-content' />
-            <ReduxNavigation />
+            <StyleProvider style={getTheme(themeArms)}>
+                <ReduxNavigation />
+            </StyleProvider>
         </Provider>
     )
 }

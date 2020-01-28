@@ -1,16 +1,17 @@
 import React from 'react'
-import { Button, Icon } from 'native-base'
+import { Button } from 'native-base'
+import IconForButton from './IconForButton'
 
 const HeaderComponenet = ({ props }) => {
     const { navigation } = props
     return (<>
         <Button
-            transparent
+            rounded
             onPress={() => {
                 navigation.toggleDrawer()
             }}
         >
-            <Icon name='menu' />
+            <IconForButton name='menu' />
         </Button>
     </>)
 }
