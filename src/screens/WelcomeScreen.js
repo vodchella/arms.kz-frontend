@@ -6,7 +6,6 @@ import {
     Text,
 } from 'react-native'
 import styles from '../styles'
-import * as Colors from '../constants/Colors'
 
 const WelcomeScreen = () => {
     return (<>

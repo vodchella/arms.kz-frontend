@@ -1,18 +1,18 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Button, Icon } from 'native-base'
 
-const Header = ({ props }) => {
+const HeaderComponenet = ({ props }) => {
     const { navigation } = props
     return (<>
-        <Text
-            style={{padding: 5, color: 'white'}}
+        <Button
+            transparent
             onPress={() => {
                 navigation.toggleDrawer()
             }}
         >
-            Menu
-        </Text>
+            <Icon name='menu' />
+        </Button>
     </>)
 }
 
-export default Header
+export default HeaderComponenet

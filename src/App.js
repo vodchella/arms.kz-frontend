@@ -25,7 +25,6 @@ const DrawerNavigation = createDrawerNavigator({
     contentOptions: {
         activeTintColor: Colors.PRIMARY,
         inactiveTintColor: Colors.ON_BACKGROUND,
-
     },
     navigationOptions: ({ navigation }) => ({
         headerStyle: {backgroundColor: Colors.SURFACE},
