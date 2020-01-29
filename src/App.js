@@ -10,7 +10,7 @@ import getTheme from './styles/native-base-theme/components';
 import themeArms from './styles/native-base-theme/variables/arms'
 import WelcomeScreen from './screens/WelcomeScreen'
 import WorkoutsScreen from './screens/WorkoutsScreen'
-import StatisticsScreen from './screens/StatisticsScreen'
+import ExercisesScreen from './screens/ExercisesScreen'
 import DrawerContainer from './components/DrawerContainer'
 import Header from './components/Header'
 import * as Colors from './constants/Colors'
@@ -18,11 +18,11 @@ import * as Colors from './constants/Colors'
 
 const DrawerNavigation = createDrawerNavigator({
     WorkoutsScreen: { screen: WorkoutsScreen, navigationOptions: { title: 'Тренировки' } },
-    StatisticsScreen: { screen: StatisticsScreen, navigationOptions: { title: 'Статистика' } },
+    ExercisesScreen: { screen: ExercisesScreen, navigationOptions: { title: 'Упражнения' } },
     WelcomeScreen: { screen: WelcomeScreen, navigationOptions: { title: 'Об arms.kz' } },
 }, {
     headerMode: 'float',
-    initialRouteName: 'StatisticsScreen',
+    initialRouteName: 'ExercisesScreen',
     contentComponent: DrawerContainer,
     drawerType: 'front',
     contentOptions: {
