@@ -1,23 +1,30 @@
 import React from 'react'
-import {
-    SafeAreaView,
-    ScrollView,
-    View,
-    Text,
-} from 'react-native'
-import styles from '../styles'
+import { Container, Content, List, ListItem, Text } from 'native-base'
+import * as Colors from '../constants/Colors'
 
-const StatisticsScreen = () => {
+const StatisticsScreen = (props) => {
     return (<>
-        <SafeAreaView style={{ height: '100%' }}>
-            <ScrollView contentInsetAdjustmentBehavior='automatic' style={styles.scrollView}>
-                <View style={styles.body}>
-                    <View style={styles.sectionContainer}>
-                        <Text style={styles.sectionTitle}>Статистика</Text>
-                    </View>
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+    <Container style={{ backgroundColor: Colors.SURFACE }}>
+        <Content>
+          <List>
+            <ListItem itemDivider>
+              <Text>A</Text>
+            </ListItem>
+            <ListItem>
+              <Text>Aaron Bennet</Text>
+            </ListItem>
+            <ListItem>
+              <Text>Ali Connors</Text>
+            </ListItem>
+            <ListItem itemDivider>
+              <Text>B</Text>
+            </ListItem>
+            <ListItem>
+              <Text>Bradley Horowitz</Text>
+            </ListItem>
+          </List>
+        </Content>
+      </Container>
     </>)
 }
 

@@ -217,9 +217,9 @@ export default {
   lineHeight: 24,
 
   // List
-  listBg: 'transparent',
-  listBorderColor: '#c9c9c9',
-  listDividerBg: '#f4f4f4',
+  listBg: Colors.SURFACE, //'transparent',
+  listBorderColor: Colors.ON_SURFACE, //'#c9c9c9',
+  listDividerBg: Colors.ON_SURFACE, //'#f4f4f4',
   listBtnUnderlayColor: '#DDD',
   listItemPadding: 12,
   listNoteColor: '#808080',

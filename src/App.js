@@ -22,7 +22,7 @@ const DrawerNavigation = createDrawerNavigator({
     WelcomeScreen: { screen: WelcomeScreen, navigationOptions: { title: 'Об arms.kz' } },
 }, {
     headerMode: 'float',
-    initialRouteName: 'WelcomeScreen',
+    initialRouteName: 'StatisticsScreen',
     contentComponent: DrawerContainer,
     drawerType: 'front',
     contentOptions: {
