@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Container, Content, List, ListItem, Text } from 'native-base'
 import arms from '../connectors/Arms'
 import * as Colors from '../constants/Colors'
+import * as ex from '../redux/exercises'
 
 class ExercisesScreen extends Component {
     state = {
@@ -9,13 +11,14 @@ class ExercisesScreen extends Component {
     }
 
     componentDidMount() {
+        const { setExercisesList } = this.props
         arms.listExercises((exercises) => {
-            this.setState({ exercises })
+            setExercisesList(exercises)
         })
     }
 
     render() {
-        const { exercises } = this.state
+        const { exercisesList } = this.props
         return (<>
             <Container style={{ backgroundColor: Colors.SURFACE }}>
                 <Content>
@@ -23,7 +26,7 @@ class ExercisesScreen extends Component {
                         <ListItem itemDivider>
                             <Text>Упражнения</Text>
                         </ListItem>
-                        {exercises.map(exercise => (
+                        {exercisesList.map(exercise => (
                             <ListItem key={exercise.id}>
                                 <Text>{exercise.name}</Text>
                             </ListItem>
@@ -35,4 +38,12 @@ class ExercisesScreen extends Component {
     }
 }
 
-export default ExercisesScreen
+const mapStateToProps = state => ({
+    exercisesList: state.exercises.list,
+})
+
+const mapDispatchToProps = {
+    setExercisesList: ex.setExercisesList,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExercisesScreen)

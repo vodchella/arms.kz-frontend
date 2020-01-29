@@ -1,0 +1,1 @@
+export const EXERCISES_SET_LIST = 'EXERCISES_SET_LIST'
