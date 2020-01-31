@@ -34,7 +34,7 @@ export function requestArms(url, onOk, onFail, resultModifier) {
                     if (onFail) {
                         onFail(responseJson);
                     }
-                    showError(getErrorFromJson(responseJson));
+                    console.warn(getErrorFromJson(responseJson));
                 });
             } else {
                 invalidContentType = true;
@@ -48,6 +48,6 @@ export function requestArms(url, onOk, onFail, resultModifier) {
             if (onFail) {
                 onFail(error);
             }
-            showError(error.message);
+            console.warn(error.message);
         });
 }

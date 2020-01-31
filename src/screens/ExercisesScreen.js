@@ -33,8 +33,7 @@ class ExercisesScreen extends Component {
                         ))}
                     </List>
                 </Content>
-            </Container>
-            </>)
+            </Container></>)
     }
 }
 
