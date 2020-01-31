@@ -7,7 +7,6 @@ import ROUTE_PROPS from '../constants/RouteProps'
 const HeaderComponent = ({ props }) => {
     const { navigation } = props
     const { routes, index } = navigation.state
-    console.log(routes[index].routeName)
     return (
         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
             <Button

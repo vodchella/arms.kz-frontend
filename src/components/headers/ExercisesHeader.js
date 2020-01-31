@@ -1,16 +1,51 @@
 
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Button } from 'native-base'
 import IconForButton from '../IconForButton'
+import arms from '../../connectors/Arms'
+import * as ex from '../../redux/exercises'
+import * as ui from '../../redux/ui'
 
 class ExercisesHeader extends Component {
+    state = {
+        buttonDisabled: false,
+    }
+
+    refreshExercises = () => {
+        const { setExercisesList, setExercisesListLoading } = this.props
+        this.setState({ buttonDisabled: true })
+        setExercisesListLoading(true)
+        setExercisesList([])
+        arms.listExercises((exercises) => {
+            setExercisesList(exercises)
+            setExercisesListLoading(false)
+            this.setState({ buttonDisabled: false })
+        }, () => {
+            setExercisesListLoading(false)
+            this.setState({ buttonDisabled: false })
+        })
+    }
+
     render() {
+        const { buttonDisabled } = this.state
         return (
-            <Button transparent>
+            <Button
+                transparent
+                disabled={buttonDisabled}
+                onPress={this.refreshExercises}
+            >
                 <IconForButton name='refresh' onTransparent />
             </Button>
         )
     }
 }
 
-export default ExercisesHeader
+const mapStateToProps = state => ({})
+
+const mapDispatchToProps = {
+    setExercisesList: ex.setExercisesList,
+    setExercisesListLoading: ui.setExercisesListLoading,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExercisesHeader)
