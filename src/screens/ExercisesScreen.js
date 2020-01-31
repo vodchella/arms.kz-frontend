@@ -8,10 +8,6 @@ import * as ex from '../redux/exercises'
 import * as ui from '../redux/ui'
 
 class ExercisesScreen extends Component {
-    state = {
-        exercises: []
-    }
-
     componentDidMount() {
         const { setExercisesList, setExercisesListLoading } = this.props
         setExercisesListLoading(true)
