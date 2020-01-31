@@ -31,7 +31,7 @@ const DrawerNavigator = createDrawerNavigator({
     },
 }, {
     headerMode: 'float',
-    initialRouteName: RouteNames.EXERCIES,
+    initialRouteName: RouteNames.EXERCISES,
     contentComponent: DrawerContainer,
     drawerType: 'front',
     contentOptions: {
