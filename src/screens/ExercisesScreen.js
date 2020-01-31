@@ -30,15 +30,12 @@ class ExercisesScreen extends Component {
                 {!isExercisesListLoading && (
                     <Content>
                         <List>
-                                <ListItem itemDivider>
-                                    <Text>Упражнения</Text>
+                            {exercisesList.map(exercise => (
+                                <ListItem key={exercise.id}>
+                                    <Text>{exercise.name}</Text>
                                 </ListItem>
-                                {exercisesList.map(exercise => (
-                                    <ListItem key={exercise.id}>
-                                        <Text>{exercise.name}</Text>
-                                    </ListItem>
-                                ))}
-                            </List>
+                            ))}
+                        </List>
                     </Content>
                 )}
             </Container></>)
