@@ -6,14 +6,15 @@ import ExercisesScreen from '../../screens/ExercisesScreen'
 import DrawerContainer from '../DrawerContainer'
 import Header from '../Header'
 import * as Colors from '../../constants/Colors'
+import * as RouteNames from '../../constants/RouteNames'
 
 const DrawerNavigator = createDrawerNavigator({
-    WorkoutsScreen: { screen: WorkoutsScreen, navigationOptions: { title: 'Тренировки' } },
-    ExercisesScreen: { screen: ExercisesScreen, navigationOptions: { title: 'Упражнения' } },
-    WelcomeScreen: { screen: WelcomeScreen, navigationOptions: { title: 'Об arms.kz' } },
+    [RouteNames.WORKOUTS]: { screen: WorkoutsScreen, navigationOptions: { title: 'Тренировки' } },
+    [RouteNames.EXERCISES]: { screen: ExercisesScreen, navigationOptions: { title: 'Упражнения' } },
+    [RouteNames.WELCOME]: { screen: WelcomeScreen, navigationOptions: { title: 'Об arms.kz' } },
 }, {
     headerMode: 'float',
-    initialRouteName: 'ExercisesScreen',
+    initialRouteName: RouteNames.EXERCIES,
     contentComponent: DrawerContainer,
     drawerType: 'front',
     contentOptions: {

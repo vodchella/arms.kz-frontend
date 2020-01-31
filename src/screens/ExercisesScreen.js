@@ -11,6 +11,7 @@ class ExercisesScreen extends Component {
     componentDidMount() {
         const { setExercisesList, setExercisesListLoading } = this.props
         setExercisesListLoading(true)
+        setExercisesList([])
         arms.listExercises((exercises) => {
             setExercisesList(exercises)
             setExercisesListLoading(false)
