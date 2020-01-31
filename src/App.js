@@ -6,6 +6,7 @@ import { StyleProvider } from 'native-base'
 import ReduxNavigator from './components/navigators/ReduxNavigator'
 import nav from './redux/navigation/Reducers'
 import exercises from './redux/exercises/Reducers'
+import ui from './redux/ui/Reducers'
 import getTheme from './styles/native-base-theme/components';
 import themeArms from './styles/native-base-theme/variables/arms'
 
@@ -13,6 +14,7 @@ import themeArms from './styles/native-base-theme/variables/arms'
 const rootReducer = combineReducers({
     nav,
     exercises,
+    ui,
 })
 const store = createStore(rootReducer)
 
