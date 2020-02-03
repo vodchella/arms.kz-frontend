@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, Content, List, ListItem, Text, Body } from 'native-base'
-import moment from 'moment-timezone'
 import * as RNLocalize from 'react-native-localize'
+import { formatDate } from '../utils/Dates'
 import Waiting from '../components/Waiting'
 import arms from '../connectors/Arms'
 import * as RouteNames from '../constants/RouteNames'
@@ -25,17 +25,20 @@ class ExercisesScreen extends Component {
         }, 1000)
     }
 
-    formatDate = (dateString, timeZone) => {
-        if (dateString) {
-            const date = moment.tz(dateString, timeZone)
-            return date.format('DD MMM YYYY')
-        }
-    }
-
     openExerciseHistory = (exerciseId, exerciseName) => {
-        const { navigation, setExerciseHistoryLoading, setExerciseHistoryInfo } = this.props
-        setExerciseHistoryInfo(exerciseId, exerciseName)
+        const { navigation, setExerciseHistoryLoading, setExerciseHistory, setExerciseHistoryInfo } = this.props
         setExerciseHistoryLoading(true)
+        setExerciseHistory([])
+        setTimeout(() => {
+            arms.getExerciseHistory(exerciseId,
+                (history) => {
+                    setExerciseHistoryInfo(exerciseId, exerciseName)
+                    setExerciseHistory(history)
+                    setExerciseHistoryLoading(false)
+                }, () => {
+                    setExerciseHistoryLoading(false)
+                })
+        }, 1000)
         navigation.navigate(RouteNames.EXERCISE_HISTORY)
     }
 
@@ -55,7 +58,7 @@ class ExercisesScreen extends Component {
                                     <Body>
                                         <Text>{exercise.name}</Text>
                                         {exercise.last_workout_date && (
-                                            <Text note>{this.formatDate(exercise.last_workout_date, timeZone)}</Text>
+                                            <Text note>{formatDate(exercise.last_workout_date, timeZone)}</Text>
                                         )}
                                     </Body>
                                 </ListItem>
@@ -74,6 +77,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     setExercisesList: ex.setExercisesList,
+    setExerciseHistory: ex.setExerciseHistory,
     setExercisesListLoading: ui.setExercisesListLoading,
     setExerciseHistoryLoading: ui.setExerciseHistoryLoading,
     setExerciseHistoryInfo: ui.setExerciseHistoryInfo,

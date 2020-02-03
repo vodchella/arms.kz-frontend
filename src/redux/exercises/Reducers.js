@@ -2,6 +2,7 @@ import * as actions from './ActionTypes'
 
 const initialState = {
     list: [],
+    history: [],
 }
 
 export default function exercisesReducer(state = initialState, action) {
@@ -10,6 +11,11 @@ export default function exercisesReducer(state = initialState, action) {
             return {
                 ...state,
                 list: action.exercises,
+            }
+        case actions.EXERCISE_SET_HISTORY:
+            return {
+                ...state,
+                history: action.history,
             }
         default:
             return state

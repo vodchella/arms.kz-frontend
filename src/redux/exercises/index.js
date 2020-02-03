@@ -6,3 +6,10 @@ export function setExercisesList(exercises) {
         exercises
     }
 }
+
+export function setExerciseHistory(history) {
+    return {
+        type: actions.EXERCISE_SET_HISTORY,
+        history
+    }
+}
