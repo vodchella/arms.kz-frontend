@@ -12,11 +12,16 @@ class ExercisesHeader extends Component {
         buttonDisabled: false,
     }
 
-    refreshExercises = () => {
+    onButtonPress = () => {
         const { setExercisesList, setExercisesListLoading } = this.props
         this.setState({ buttonDisabled: true })
         setExercisesListLoading(true)
         setExercisesList([])
+        setTimeout(this.refreshExercises, 1000)
+    }
+
+    refreshExercises = () => {
+        const { setExercisesList, setExercisesListLoading } = this.props
         arms.listExercises((exercises) => {
             setExercisesList(exercises)
             setExercisesListLoading(false)
@@ -33,7 +38,7 @@ class ExercisesHeader extends Component {
             <Button
                 transparent
                 disabled={buttonDisabled}
-                onPress={this.refreshExercises}
+                onPress={this.onButtonPress}
             >
                 <IconForButton name='refresh' onTransparent />
             </Button>

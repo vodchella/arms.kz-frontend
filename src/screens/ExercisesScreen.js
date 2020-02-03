@@ -12,12 +12,14 @@ class ExercisesScreen extends Component {
         const { setExercisesList, setExercisesListLoading } = this.props
         setExercisesListLoading(true)
         setExercisesList([])
-        arms.listExercises((exercises) => {
-            setExercisesList(exercises)
-            setExercisesListLoading(false)
-        }, () => {
-            setExercisesListLoading(false)
-        })
+        setTimeout(() => {
+            arms.listExercises((exercises) => {
+                setExercisesList(exercises)
+                setExercisesListLoading(false)
+            }, () => {
+                setExercisesListLoading(false)
+            })
+        }, 1000)
     }
 
     render() {
