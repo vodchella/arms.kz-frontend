@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, Content, List, ListItem, Text } from 'native-base'
+import { Container, Content, List, ListItem, Text, Body } from 'native-base'
+import moment from 'moment-timezone'
+import * as RNLocalize from 'react-native-localize'
 import Waiting from '../components/Waiting'
 import arms from '../connectors/Arms'
 import * as Colors from '../constants/Colors'
@@ -22,8 +24,14 @@ class ExercisesScreen extends Component {
         }, 1000)
     }
 
+    formatDate = (dateString, timeZone) => {
+        const date = moment.tz(dateString, timeZone)
+        return date.format('DD MMM YYYY')
+    }
+
     render() {
         const { exercisesList, isExercisesListLoading } = this.props
+        const timeZone = RNLocalize.getTimeZone()
         return (<>
             <Container style={{ backgroundColor: Colors.SURFACE }}>
                 {isExercisesListLoading && (
@@ -34,7 +42,10 @@ class ExercisesScreen extends Component {
                         <List>
                             {exercisesList.map(exercise => (
                                 <ListItem key={exercise.id}>
-                                    <Text>{exercise.name}</Text>
+                                    <Body>
+                                        <Text>{exercise.name}</Text>
+                                        <Text note>{this.formatDate(exercise.last_workout_date, timeZone)}</Text>
+                                    </Body>
                                 </ListItem>
                             ))}
                         </List>
