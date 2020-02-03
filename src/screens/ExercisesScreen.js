@@ -5,6 +5,7 @@ import moment from 'moment-timezone'
 import * as RNLocalize from 'react-native-localize'
 import Waiting from '../components/Waiting'
 import arms from '../connectors/Arms'
+import * as RouteNames from '../constants/RouteNames'
 import * as Colors from '../constants/Colors'
 import * as ex from '../redux/exercises'
 import * as ui from '../redux/ui'
@@ -25,8 +26,15 @@ class ExercisesScreen extends Component {
     }
 
     formatDate = (dateString, timeZone) => {
-        const date = moment.tz(dateString, timeZone)
-        return date.format('DD MMM YYYY')
+        if (dateString) {
+            const date = moment.tz(dateString, timeZone)
+            return date.format('DD MMM YYYY')
+        }
+    }
+
+    openExerciseHistory = (exerciseId, exerciseName) => {
+        const { navigation } = this.props
+        navigation.navigate(RouteNames.EXERCISE_HISTORY)
     }
 
     render() {
@@ -41,10 +49,12 @@ class ExercisesScreen extends Component {
                     <Content>
                         <List>
                             {exercisesList.map(exercise => (
-                                <ListItem key={exercise.id}>
+                                <ListItem key={exercise.id} onPress={() => this.openExerciseHistory(exercise.id, exercise.name)}>
                                     <Body>
                                         <Text>{exercise.name}</Text>
-                                        <Text note>{this.formatDate(exercise.last_workout_date, timeZone)}</Text>
+                                        {exercise.last_workout_date && (
+                                            <Text note>{this.formatDate(exercise.last_workout_date, timeZone)}</Text>
+                                        )}
                                     </Body>
                                 </ListItem>
                             ))}

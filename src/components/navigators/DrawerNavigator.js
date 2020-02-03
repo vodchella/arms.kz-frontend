@@ -3,6 +3,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer'
 import WelcomeScreen from '../../screens/WelcomeScreen'
 import WorkoutsScreen from '../../screens/WorkoutsScreen'
 import ExercisesScreen from '../../screens/ExercisesScreen'
+import ExerciseHistoryScreen from '../../screens/ExerciseHistoryScreen'
 import DrawerContainer from '../DrawerContainer'
 import Header from '../Header'
 import HeaderRight from '../HeaderRight'
@@ -21,6 +22,12 @@ const DrawerNavigator = createDrawerNavigator({
         screen: ExercisesScreen,
         navigationOptions: {
             title: ROUTE_PROPS[RouteNames.EXERCISES].title
+        }
+    },
+    [RouteNames.EXERCISE_HISTORY]: {
+        screen: ExerciseHistoryScreen,
+        navigationOptions: {
+            title: ROUTE_PROPS[RouteNames.EXERCISE_HISTORY].title
         }
     },
     [RouteNames.WELCOME]: {
