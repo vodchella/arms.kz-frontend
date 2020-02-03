@@ -1,4 +1,6 @@
 import React from 'react'
+import 'moment/locale/ru'
+import moment from 'moment-timezone'
 import { StatusBar } from 'react-native'
 import { combineReducers, createStore } from 'redux'
 import { Provider } from 'react-redux'
@@ -17,6 +19,9 @@ const rootReducer = combineReducers({
     ui,
 })
 const store = createStore(rootReducer)
+
+
+moment.locale('ru')
 
 
 const App = () => {
