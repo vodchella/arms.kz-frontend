@@ -33,7 +33,8 @@ class ExercisesScreen extends Component {
     }
 
     openExerciseHistory = (exerciseId, exerciseName) => {
-        const { navigation } = this.props
+        const { navigation, setExerciseHistoryInfo } = this.props
+        setExerciseHistoryInfo(exerciseId, exerciseName)
         navigation.navigate(RouteNames.EXERCISE_HISTORY)
     }
 
@@ -73,6 +74,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     setExercisesList: ex.setExercisesList,
     setExercisesListLoading: ui.setExercisesListLoading,
+    setExerciseHistoryInfo: ui.setExerciseHistoryInfo,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExercisesScreen)
