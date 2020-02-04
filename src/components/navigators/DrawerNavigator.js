@@ -1,5 +1,6 @@
 import React from 'react'
 import { createDrawerNavigator } from 'react-navigation-drawer'
+import { createStackNavigator } from 'react-navigation-stack'
 import WelcomeScreen from '../../screens/WelcomeScreen'
 import WorkoutsScreen from '../../screens/WorkoutsScreen'
 import ExercisesScreen from '../../screens/ExercisesScreen'
@@ -11,13 +12,7 @@ import * as Colors from '../../constants/Colors'
 import * as RouteNames from '../../constants/RouteNames'
 import ROUTE_PROPS from '../../constants/RouteProps'
 
-const DrawerNavigator = createDrawerNavigator({
-    [RouteNames.WORKOUTS]: {
-        screen: WorkoutsScreen,
-        navigationOptions: {
-            title: ROUTE_PROPS[RouteNames.WORKOUTS].title
-        }
-    },
+const exercisesStack = createStackNavigator({
     [RouteNames.EXERCISES]: {
         screen: ExercisesScreen,
         navigationOptions: {
@@ -28,6 +23,24 @@ const DrawerNavigator = createDrawerNavigator({
         screen: ExerciseHistoryScreen,
         navigationOptions: {
             title: ROUTE_PROPS[RouteNames.EXERCISE_HISTORY].title
+        }
+    },
+}, {
+    headerMode: 'none',
+    initialRouteName: RouteNames.EXERCISES,
+})
+
+const DrawerNavigator = createDrawerNavigator({
+    [RouteNames.WORKOUTS]: {
+        screen: WorkoutsScreen,
+        navigationOptions: {
+            title: ROUTE_PROPS[RouteNames.WORKOUTS].title
+        }
+    },
+    [RouteNames.EXERCISES]: {
+        screen: exercisesStack,
+        navigationOptions: {
+            title: ROUTE_PROPS[RouteNames.EXERCISES].title
         }
     },
     [RouteNames.WELCOME]: {
