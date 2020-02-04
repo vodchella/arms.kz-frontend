@@ -9,9 +9,16 @@ const HeaderComponent = ({ props }) => {
     const { navigation } = props
     const { routes, index } = navigation.state
     const route = routes[index]
-    const routeName = route.routes[route.index].routeName
-    var action = route.index === 0 ? navigation.toggleDrawer : () => { navigation.dispatch(NavigationActions.back()) }
-    var icon = route.index === 0 ? 'menu' : 'arrow-back'
+    let routeName = route.routeName
+    let action = navigation.toggleDrawer
+    let icon = 'menu'
+    console.log('---')
+    if (route.index != undefined) {
+        console.log(route)
+        routeName = route.routes[route.index].routeName
+        action = route.index === 0 ? navigation.toggleDrawer : () => { navigation.dispatch(NavigationActions.back()) }
+        icon = route.index === 0 ? 'menu' : 'arrow-back'
+    }
     return (
         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
             <Button
