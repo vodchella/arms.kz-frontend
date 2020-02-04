@@ -1,6 +1,6 @@
 import React from 'react'
 import { createDrawerNavigator } from 'react-navigation-drawer'
-import { createStackNavigator } from 'react-navigation-stack'
+import { createStackNavigator, CardStyleInterpolators } from 'react-navigation-stack'
 import WelcomeScreen from '../../screens/WelcomeScreen'
 import WorkoutsScreen from '../../screens/WorkoutsScreen'
 import ExercisesScreen from '../../screens/ExercisesScreen'
@@ -22,7 +22,8 @@ const exercisesStack = createStackNavigator({
     [RouteNames.EXERCISE_HISTORY]: {
         screen: ExerciseHistoryScreen,
         navigationOptions: {
-            title: ROUTE_PROPS[RouteNames.EXERCISE_HISTORY].title
+            title: ROUTE_PROPS[RouteNames.EXERCISE_HISTORY].title,
+            cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
         }
     },
 }, {
