@@ -29,13 +29,10 @@ moment.locale('ru')
 class App extends Component {
     componentDidMount() {
         GoogleSignin.configure({
-            scopes: ['profile'],
+            scopes: ['profile', 'email'],
             webClientId: GOOGLE_CLIENT_ID,
             offlineAccess: true,
             forceConsentPrompt: true,
-            // accountName: '',
-            // hostedDomain: '',
-            // loginHint: '',
         })
     }
 
