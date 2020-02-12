@@ -18,7 +18,7 @@ class ExerciseHistoryScreen extends Component {
                 {!isExerciseHistoryLoading && (
                     <Content>
                         <List>
-                            <ListItem itemDivider>
+                            <ListItem key='first_key' itemDivider>
                                 <Text>{info.caption}</Text>
                             </ListItem>
                             {history.map(h => (

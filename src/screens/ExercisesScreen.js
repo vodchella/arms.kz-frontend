@@ -12,34 +12,40 @@ import * as ui from '../redux/ui'
 
 class ExercisesScreen extends Component {
     componentDidMount() {
-        const { setExercisesList, setExercisesListLoading } = this.props
-        setExercisesListLoading(true)
-        setExercisesList([])
-        setTimeout(() => {
-            arms.listExercises((exercises) => {
-                setExercisesList(exercises)
-                setExercisesListLoading(false)
-            }, () => {
-                setExercisesListLoading(false)
-            })
-        }, 1000)
+        const { setExercisesList, setExercisesListLoading, tokens } = this.props
+        if (tokens) {
+            const { auth: authToken } = tokens
+            setExercisesListLoading(true)
+            setExercisesList([])
+            setTimeout(() => {
+                arms.listExercises(authToken, (exercises) => {
+                    setExercisesList(exercises)
+                    setExercisesListLoading(false)
+                }, () => {
+                    setExercisesListLoading(false)
+                })
+            }, 1000)
+        }
     }
 
     openExerciseHistory = (exerciseId, exerciseName) => {
-        const { navigation, setExerciseHistoryLoading, setExerciseHistory, setExerciseHistoryInfo } = this.props
-        setExerciseHistoryLoading(true)
-        setExerciseHistory([])
-        setTimeout(() => {
-            arms.getExerciseHistory(exerciseId,
-                (history) => {
-                    setExerciseHistoryInfo(exerciseId, exerciseName)
-                    setExerciseHistory(history)
-                    setExerciseHistoryLoading(false)
-                }, () => {
-                    setExerciseHistoryLoading(false)
-                })
-        }, 1000)
-        navigation.navigate(RouteNames.EXERCISE_HISTORY)
+        const { navigation, setExerciseHistoryLoading, setExerciseHistory, setExerciseHistoryInfo, tokens } = this.props
+        if (tokens) {
+            const { auth: authToken } = tokens
+            setExerciseHistoryLoading(true)
+            setExerciseHistory([])
+            setTimeout(() => {
+                arms.getExerciseHistory(authToken, exerciseId,
+                    (history) => {
+                        setExerciseHistoryInfo(exerciseId, exerciseName)
+                        setExerciseHistory(history)
+                        setExerciseHistoryLoading(false)
+                    }, () => {
+                        setExerciseHistoryLoading(false)
+                    })
+            }, 1000)
+            navigation.navigate(RouteNames.EXERCISE_HISTORY)
+        }
     }
 
     render() {
@@ -73,6 +79,7 @@ class ExercisesScreen extends Component {
 const mapStateToProps = state => ({
     exercisesList: state.exercises.list,
     isExercisesListLoading: state.ui.isExercisesListLoading,
+    tokens: state.auth.tokens,
 })
 
 const mapDispatchToProps = {

@@ -21,15 +21,18 @@ class ExercisesHeader extends Component {
     }
 
     refreshExercises = () => {
-        const { setExercisesList, setExercisesListLoading } = this.props
-        arms.listExercises((exercises) => {
-            setExercisesList(exercises)
-            setExercisesListLoading(false)
-            this.setState({ buttonDisabled: false })
-        }, () => {
-            setExercisesListLoading(false)
-            this.setState({ buttonDisabled: false })
-        })
+        const { setExercisesList, setExercisesListLoading, tokens } = this.props
+        if (tokens) {
+            const { auth: authToken } = tokens
+            arms.listExercises(authToken, (exercises) => {
+                setExercisesList(exercises)
+                setExercisesListLoading(false)
+                this.setState({ buttonDisabled: false })
+            }, () => {
+                setExercisesListLoading(false)
+                this.setState({ buttonDisabled: false })
+            })
+        }
     }
 
     render() {
@@ -46,7 +49,9 @@ class ExercisesHeader extends Component {
     }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+    tokens: state.auth.tokens,
+})
 
 const mapDispatchToProps = {
     setExercisesList: ex.setExercisesList,
