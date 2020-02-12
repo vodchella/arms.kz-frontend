@@ -6,17 +6,17 @@ import {
     View,
     Text,
     StyleSheet,
-  Alert,
-  Image,
-  ActivityIndicator,
-  TouchableOpacity,
+    Alert,
+    Image,
+    ActivityIndicator,
+    TouchableOpacity,
 } from 'react-native'
-// import styles from '../styles'
 import {
     GoogleSignin,
     GoogleSigninButton,
     statusCodes,
-  } from 'react-native-google-signin'
+} from 'react-native-google-signin'
+import arms from '../connectors/Arms'
 import * as auth from '../redux/auth'
 
 class WelcomeScreen extends Component {
@@ -29,22 +29,31 @@ class WelcomeScreen extends Component {
         this._isSignedIn();
     }
 
+    signInArms = (googleToken) => {
+        const { setTokens } = this.props
+        arms.signInByGoogleToken(googleToken, (tokens) => {
+            setTokens(tokens)
+            console.log('Arms tokens --> ', tokens)
+        }, () => {
+            setTokens(null)
+        })
+    }
+
     _isSignedIn = async () => {
-        const isSignedIn = await GoogleSignin.isSignedIn();
+        const isSignedIn = await GoogleSignin.isSignedIn()
         if (isSignedIn) {
             this._getCurrentUserInfo()
-        } else {
-            console.log('Please Login');
         }
-        this.setState({ gettingLoginStatus: false });
+        this.setState({ gettingLoginStatus: false })
     }
      
     _getCurrentUserInfo = async () => {
         const { setGoogleUserInfo } = this.props
         try {
-            const googleUserInfo = await GoogleSignin.signInSilently();
+            const googleUserInfo = await GoogleSignin.signInSilently()
             setGoogleUserInfo(googleUserInfo)
             console.log('User Info --> ', googleUserInfo);
+            this.signInArms(googleUserInfo.idToken)
         } catch (error) {
             if (error.code === statusCodes.SIGN_IN_REQUIRED) {
                 console.log('User has not signed in yet')
@@ -63,6 +72,7 @@ class WelcomeScreen extends Component {
             const googleUserInfo = await GoogleSignin.signIn()
             setGoogleUserInfo(googleUserInfo)
             console.log('User Info --> ', googleUserInfo)
+            this.signInArms(googleUserInfo.idToken)
         } catch (error) {
             console.log('Message', error.message)
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {

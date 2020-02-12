@@ -2,7 +2,7 @@ import { Platform } from 'react-native'
 import { getErrorFromJson } from './Errors'
 import Platforms from '../enums/Platforms'
 
-export function requestArms(url, onOk, onFail, resultModifier) {
+export function requestArms(method, url, onOk, onFail, resultModifier) {
     const baseUrl = 'https://arms.kz/';
     const apiUrl = `${baseUrl}api/v1/`;
     const requestUrl = `${apiUrl}${url}`;
@@ -11,7 +11,7 @@ export function requestArms(url, onOk, onFail, resultModifier) {
         [Platforms.IOS]: 'iOS',
         [Platforms.ANDROID]: 'Android'
     });
-    fetch(requestUrl, { headers: { 'User-Agent': `Arms.kz ${platform} v0.01` } })
+    fetch(requestUrl, { method, headers: { 'User-Agent': `Arms.kz ${platform} v0.01` } })
         .then((response) => {
             const contentType = response.headers.get('Content-Type') || '';
             const isJson = contentType.includes('application/json');

@@ -2,10 +2,7 @@ import * as actions from './ActionTypes'
 
 const initialState = {
     googleUserInfo: null,
-    tokens: {
-        auth: '',
-        refresh: '',
-    },
+    tokens: null,
 }
 
 export default function authReducer(state = initialState, action) {
