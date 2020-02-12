@@ -52,7 +52,7 @@ const DrawerNavigator = createDrawerNavigator({
     },
 }, {
     headerMode: 'float',
-    initialRouteName: RouteNames.EXERCISES,
+    initialRouteName: RouteNames.WELCOME,
     contentComponent: DrawerContainer,
     drawerType: 'front',
     contentOptions: {

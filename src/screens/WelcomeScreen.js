@@ -17,127 +17,119 @@ import {
     GoogleSigninButton,
     statusCodes,
   } from 'react-native-google-signin'
+import * as auth from '../redux/auth'
 
 class WelcomeScreen extends Component {
     state = {
         userInfo: null,
         gettingLoginStatus: true,
-      }
+    }
 
     componentDidMount() {
-        //Check if user is already signed in
         this._isSignedIn();
-      }
+    }
 
     _isSignedIn = async () => {
         const isSignedIn = await GoogleSignin.isSignedIn();
         if (isSignedIn) {
-          alert('User is already signed in');
-          //Get the User details as user is already signed in
-          this._getCurrentUserInfo();
+            this._getCurrentUserInfo()
         } else {
-          //alert("Please Login");
-          console.log('Please Login');
+            console.log('Please Login');
         }
         this.setState({ gettingLoginStatus: false });
-      };
+    }
      
-      _getCurrentUserInfo = async () => {
+    _getCurrentUserInfo = async () => {
+        const { setGoogleUserInfo } = this.props
         try {
-          const userInfo = await GoogleSignin.signInSilently();
-          console.log('User Info --> ', userInfo);
-          this.setState({ userInfo: userInfo });
+            const googleUserInfo = await GoogleSignin.signInSilently();
+            setGoogleUserInfo(googleUserInfo)
+            console.log('User Info --> ', googleUserInfo);
         } catch (error) {
-          if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-            alert('User has not signed in yet');
-            console.log('User has not signed in yet');
-          } else {
-            alert("Something went wrong. Unable to get user's info");
-            console.log("Something went wrong. Unable to get user's info");
-          }
+            if (error.code === statusCodes.SIGN_IN_REQUIRED) {
+                console.log('User has not signed in yet')
+            } else {
+                console.log("Something went wrong. Unable to get user's info")
+            }
         }
-      };
+    }
      
-      _signIn = async () => {
-        //Prompts a modal to let the user sign in into your application.
+    _signIn = async () => {
+        const { setGoogleUserInfo } = this.props
         try {
-          await GoogleSignin.hasPlayServices({
-            //Check if device has Google Play Services installed.
-            //Always resolves to true on iOS.
-            showPlayServicesUpdateDialog: true,
-          });
-          const userInfo = await GoogleSignin.signIn();
-          console.log('User Info --> ', userInfo);
-          this.setState({ userInfo: userInfo });
+            await GoogleSignin.hasPlayServices({
+                showPlayServicesUpdateDialog: true,
+            })
+            const googleUserInfo = await GoogleSignin.signIn()
+            setGoogleUserInfo(googleUserInfo)
+            console.log('User Info --> ', googleUserInfo)
         } catch (error) {
-          console.log('Message', error.message);
-          if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-            console.log('User Cancelled the Login Flow');
-          } else if (error.code === statusCodes.IN_PROGRESS) {
-            console.log('Signing In');
-          } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-            console.log('Play Services Not Available or Outdated');
-          } else {
-            console.log('Some Other Error Happened');
-          }
+            console.log('Message', error.message)
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                console.log('User Cancelled the Login Flow')
+            } else if (error.code === statusCodes.IN_PROGRESS) {
+                console.log('Signing In')
+            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                console.log('Play Services Not Available or Outdated')
+            } else {
+                console.log('Some Other Error Happened')
+            }
         }
-      };
+    };
      
-      _signOut = async () => {
-        //Remove user session from the device.
+    _signOut = async () => {
+        const { setGoogleUserInfo } = this.props
         try {
-          await GoogleSignin.revokeAccess();
-          await GoogleSignin.signOut();
-          this.setState({ userInfo: null }); // Remove the user from your app's state as well
+            await GoogleSignin.revokeAccess()
+            await GoogleSignin.signOut()
+            setGoogleUserInfo(null)
         } catch (error) {
-          console.error(error);
+            console.error(error)
         }
-      }
+    }
 
 
-      render() {
-        //returning Loader untill we check for the already signed in user
+    render() {
         if (this.state.gettingLoginStatus) {
-          return (
-            <View style={styles.container}>
-              <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-          );
+            return (
+                <View style={styles.container}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+            )
         } else {
-          if (this.state.userInfo != null) {
-            //Showing the User detail
-            return (
-              <View style={styles.container}>
-                <Image
-                  source={{ uri: this.state.userInfo.user.photo }}
-                  style={styles.imageStyle}
-                />
-                <Text style={styles.text}>
-                  Name: {this.state.userInfo.user.name}{' '}
-                </Text>
-                <Text style={styles.text}>
-                  Email: {this.state.userInfo.user.email}
-                </Text>
-                <TouchableOpacity style={styles.button} onPress={this._signOut}>
-                  <Text>Logout</Text>
-                </TouchableOpacity>
-              </View>
-            );
-          } else {
-            //For login showing the Signin button
-            return (
-              <View style={styles.container}>
-                <GoogleSigninButton
-                  style={{ width: 312, height: 48 }}
-                  size={GoogleSigninButton.Size.Wide}
-                  color={GoogleSigninButton.Color.Light}
-                  onPress={this._signIn}
-                />
-              </View>
-            );
-          }
+            const { googleUserInfo } = this.props
+            if (googleUserInfo != null) {
+                return (
+                    <View style={styles.container}>
+                        <Image
+                            source={{ uri: googleUserInfo.user.photo }}
+                            style={styles.imageStyle}
+                        />
+                        <Text style={styles.text}>
+                            Name: {googleUserInfo.user.name}{' '}
+                        </Text>
+                        <Text style={styles.text}>
+                            Email: {googleUserInfo.user.email}
+                        </Text>
+                        <TouchableOpacity style={styles.button} onPress={this._signOut}>
+                            <Text>Logout</Text>
+                        </TouchableOpacity>
+                    </View>
+                )
+            } else {
+                return (
+                    <View style={styles.container}>
+                        <GoogleSigninButton
+                            style={{ width: 312, height: 48 }}
+                            size={GoogleSigninButton.Size.Wide}
+                            color={GoogleSigninButton.Color.Light}
+                            onPress={this._signIn}
+                        />
+                    </View>
+                )
+            }
         }
-      }
+    }
 
     // render() {
         // return (<>
@@ -179,8 +171,14 @@ const styles = StyleSheet.create({
     },
   })
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+    googleUserInfo: state.auth.googleUserInfo,
+    tokens: state.auth.tokens,
+})
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+    setGoogleUserInfo: auth.setGoogleUserInfo,
+    setTokens: auth.setTokens,
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen)

@@ -11,6 +11,7 @@ import ReduxNavigator from './components/navigators/ReduxNavigator'
 import nav from './redux/navigation/Reducers'
 import exercises from './redux/exercises/Reducers'
 import ui from './redux/ui/Reducers'
+import auth from './redux/auth/Reducers'
 import getTheme from './styles/native-base-theme/components';
 import themeArms from './styles/native-base-theme/variables/arms'
 
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     nav,
     exercises,
     ui,
+    auth,
 })
 const store = createStore(rootReducer)
 
