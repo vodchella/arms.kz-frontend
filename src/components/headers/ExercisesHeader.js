@@ -13,26 +13,26 @@ class ExercisesHeader extends Component {
     }
 
     onButtonPress = () => {
-        const { setExercisesList, setExercisesListLoading } = this.props
-        this.setState({ buttonDisabled: true })
-        setExercisesListLoading(true)
-        setExercisesList([])
-        setTimeout(this.refreshExercises, 1000)
+        const { setExercisesList, setExercisesListLoading, tokens } = this.props
+        if (tokens) {
+            this.setState({buttonDisabled: true})
+            setExercisesListLoading(true)
+            setExercisesList([])
+            setTimeout(this.refreshExercises, 1000)
+        }
     }
 
     refreshExercises = () => {
         const { setExercisesList, setExercisesListLoading, tokens } = this.props
-        if (tokens) {
-            const { auth: authToken } = tokens
-            arms.listExercises(authToken, (exercises) => {
-                setExercisesList(exercises)
-                setExercisesListLoading(false)
-                this.setState({ buttonDisabled: false })
-            }, () => {
-                setExercisesListLoading(false)
-                this.setState({ buttonDisabled: false })
-            })
-        }
+        const { auth: authToken } = tokens
+        arms.listExercises(authToken, (exercises) => {
+            setExercisesList(exercises)
+            setExercisesListLoading(false)
+            this.setState({ buttonDisabled: false })
+        }, () => {
+            setExercisesListLoading(false)
+            this.setState({ buttonDisabled: false })
+        })
     }
 
     render() {
