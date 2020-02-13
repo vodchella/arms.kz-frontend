@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
-    SafeAreaView,
-    ScrollView,
     View,
     Text,
     StyleSheet,
-    Alert,
     Image,
     ActivityIndicator,
     TouchableOpacity,
@@ -26,7 +23,7 @@ class WelcomeScreen extends Component {
     }
 
     componentDidMount() {
-        this._isSignedIn();
+        this._isSignedIn()
     }
 
     signInArms = (googleToken) => {
@@ -46,23 +43,23 @@ class WelcomeScreen extends Component {
         }
         this.setState({ gettingLoginStatus: false })
     }
-     
+
     _getCurrentUserInfo = async () => {
         const { setGoogleUserInfo } = this.props
         try {
             const googleUserInfo = await GoogleSignin.signInSilently()
             setGoogleUserInfo(googleUserInfo)
-            console.log('User Info --> ', googleUserInfo);
+            console.log('User Info --> ', googleUserInfo)
             this.signInArms(googleUserInfo.idToken)
         } catch (error) {
             if (error.code === statusCodes.SIGN_IN_REQUIRED) {
                 console.log('User has not signed in yet')
             } else {
-                console.log("Something went wrong. Unable to get user's info")
+                console.log('Something went wrong. Unable to get user\'s info')
             }
         }
     }
-     
+
     _signIn = async () => {
         const { setGoogleUserInfo } = this.props
         try {
@@ -85,8 +82,8 @@ class WelcomeScreen extends Component {
                 console.log('Some Other Error Happened')
             }
         }
-    };
-     
+    }
+
     _signOut = async () => {
         const { setGoogleUserInfo } = this.props
         try {
@@ -98,88 +95,67 @@ class WelcomeScreen extends Component {
         }
     }
 
-
     render() {
         if (this.state.gettingLoginStatus) {
             return (
                 <View style={styles.container}>
-                    <ActivityIndicator size="large" color="#0000ff" />
+                    <ActivityIndicator size='large' color='#0000ff' />
                 </View>
             )
-        } else {
-            const { googleUserInfo } = this.props
-            if (googleUserInfo != null) {
-                return (
-                    <View style={styles.container}>
-                        <Image
-                            source={{ uri: googleUserInfo.user.photo }}
-                            style={styles.imageStyle}
-                        />
-                        <Text style={styles.text}>
-                            Name: {googleUserInfo.user.name}{' '}
-                        </Text>
-                        <Text style={styles.text}>
-                            Email: {googleUserInfo.user.email}
-                        </Text>
-                        <TouchableOpacity style={styles.button} onPress={this._signOut}>
-                            <Text>Logout</Text>
-                        </TouchableOpacity>
-                    </View>
-                )
-            } else {
-                return (
-                    <View style={styles.container}>
-                        <GoogleSigninButton
-                            style={{ width: 312, height: 48 }}
-                            size={GoogleSigninButton.Size.Wide}
-                            color={GoogleSigninButton.Color.Light}
-                            onPress={this._signIn}
-                        />
-                    </View>
-                )
-            }
         }
+        const { googleUserInfo } = this.props
+        if (googleUserInfo != null) {
+            return (
+                <View style={styles.container}>
+                    <Image
+                        source={{ uri: googleUserInfo.user.photo }}
+                        style={styles.imageStyle}
+                    />
+                    <Text style={styles.text}>
+                        Name: {googleUserInfo.user.name}{' '}
+                    </Text>
+                    <Text style={styles.text}>
+                        Email: {googleUserInfo.user.email}
+                    </Text>
+                    <TouchableOpacity style={styles.button} onPress={this._signOut}>
+                        <Text>Logout</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+        return (
+            <View style={styles.container}>
+                <GoogleSigninButton
+                    style={{ width: 312, height: 48 }}
+                    size={GoogleSigninButton.Size.Wide}
+                    color={GoogleSigninButton.Color.Light}
+                    onPress={this._signIn}
+                />
+            </View>
+        )
     }
-
-    // render() {
-        // return (<>
-        //     <SafeAreaView style={{ height: '100%' }}>
-        //         <ScrollView contentInsetAdjustmentBehavior='automatic' style={styles.scrollView}>
-        //             <View style={styles.body}>
-        //                 <View style={styles.sectionContainer}>
-        //                     <Text style={styles.sectionTitle}>Arms.kz</Text>
-        //                     <Text style={styles.sectionDescription}>
-        //                         Скоро <Text style={styles.highlight}>Arms.kz</Text> обрастёт функционалом,
-        //                         оставайтесь с нами!
-        //                     </Text>
-        //                 </View>
-        //             </View>
-        //         </ScrollView>
-        //     </SafeAreaView>
-        // </>)
-    // }
 }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     imageStyle: {
-      width: 200,
-      height: 300,
-      resizeMode: 'contain',
+        width: 200,
+        height: 300,
+        resizeMode: 'contain',
     },
     button: {
-      alignItems: 'center',
-      backgroundColor: '#DDDDDD',
-      padding: 10,
-      width: 300,
-      marginTop: 30,
+        alignItems: 'center',
+        backgroundColor: '#DDDDDD',
+        padding: 10,
+        width: 300,
+        marginTop: 30,
     },
-  })
+})
 
 const mapStateToProps = state => ({
     googleUserInfo: state.auth.googleUserInfo,

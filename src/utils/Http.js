@@ -10,7 +10,7 @@ export function requestArms(token, method, url, onOk, onFail, resultModifier) {
     const platform = Platform.select({
         [Platforms.IOS]: 'iOS',
         [Platforms.ANDROID]: 'Android'
-    });
+    })
     fetch(requestUrl,
         {
             method,
@@ -32,9 +32,9 @@ export function requestArms(token, method, url, onOk, onFail, resultModifier) {
                         result = resultModifier(responseJson)
                     }
                     onOk(result)
-                });
+                })
             } else {
-                invalidContentType = true;
+                invalidContentType = true
             }
         } else if (isJson) {
             response.json().then((responseJson) => {
@@ -42,7 +42,7 @@ export function requestArms(token, method, url, onOk, onFail, resultModifier) {
                     onFail(responseJson)
                 }
                 console.warn(getErrorFromJson(responseJson))
-            });
+            })
         } else {
             invalidContentType = true
         }

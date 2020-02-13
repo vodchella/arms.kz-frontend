@@ -12,9 +12,11 @@ const HeaderComponent = ({ props }) => {
     let routeName = route.routeName
     let action = navigation.toggleDrawer
     let icon = 'menu'
-    if (route.index != undefined) {
+    if (route.index !== undefined) {
         routeName = route.routes[route.index].routeName
-        action = route.index === 0 ? navigation.toggleDrawer : () => { navigation.dispatch(NavigationActions.back()) }
+        action = route.index === 0 ?
+            navigation.toggleDrawer :
+            () => { navigation.dispatch(NavigationActions.back()) }
         icon = route.index === 0 ? 'menu' : 'arrow-back'
     }
     return (

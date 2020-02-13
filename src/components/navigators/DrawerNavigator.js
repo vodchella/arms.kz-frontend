@@ -61,8 +61,8 @@ const DrawerNavigator = createDrawerNavigator({
     },
     navigationOptions: ({ navigation }) => ({
         headerStyle: { backgroundColor: Colors.SURFACE },
-        headerTitle: () => <Header props={{ navigation }}/>,
-        headerRight: () => <HeaderRight props={{ navigation }}/>,
+        headerTitle: () => <Header props={{ navigation }} />,
+        headerRight: () => <HeaderRight props={{ navigation }} />,
         headerTintColor: Colors.ON_BACKGROUND,
     })
 })

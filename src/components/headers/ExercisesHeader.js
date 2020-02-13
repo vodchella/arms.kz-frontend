@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button } from 'native-base'
@@ -15,7 +14,7 @@ class ExercisesHeader extends Component {
     onButtonPress = () => {
         const { setExercisesList, setExercisesListLoading, tokens } = this.props
         if (tokens) {
-            this.setState({buttonDisabled: true})
+            this.setState({ buttonDisabled: true })
             setExercisesListLoading(true)
             setExercisesList([])
             setTimeout(this.refreshExercises, 1000)

@@ -12,9 +12,8 @@ import nav from './redux/navigation/Reducers'
 import exercises from './redux/exercises/Reducers'
 import ui from './redux/ui/Reducers'
 import auth from './redux/auth/Reducers'
-import getTheme from './styles/native-base-theme/components';
+import getTheme from './styles/native-base-theme/components'
 import themeArms from './styles/native-base-theme/variables/arms'
-
 
 const rootReducer = combineReducers({
     nav,
@@ -24,9 +23,7 @@ const rootReducer = combineReducers({
 })
 const store = createStore(rootReducer)
 
-
 moment.locale('ru')
-
 
 class App extends Component {
     componentDidMount() {
@@ -50,4 +47,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default App

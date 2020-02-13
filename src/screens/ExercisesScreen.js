@@ -29,7 +29,14 @@ class ExercisesScreen extends Component {
     }
 
     openExerciseHistory = (exerciseId, exerciseName) => {
-        const { navigation, setExerciseHistoryLoading, setExerciseHistory, setExerciseHistoryInfo, tokens } = this.props
+        const {
+            navigation,
+            setExerciseHistoryLoading,
+            setExerciseHistory,
+            setExerciseHistoryInfo,
+            tokens
+        } = this.props
+
         if (tokens) {
             const { auth: authToken } = tokens
             setExerciseHistoryLoading(true)
@@ -60,11 +67,18 @@ class ExercisesScreen extends Component {
                     <Content>
                         <List>
                             {exercisesList.map(exercise => (
-                                <ListItem key={exercise.id} onPress={() => this.openExerciseHistory(exercise.id, exercise.name)}>
+                                <ListItem
+                                    key={exercise.id}
+                                    onPress={
+                                        () => this.openExerciseHistory(exercise.id, exercise.name)
+                                    }
+                                >
                                     <Body>
                                         <Text>{exercise.name}</Text>
                                         {exercise.last_workout_date && (
-                                            <Text note>{formatDate(exercise.last_workout_date, timeZone)}</Text>
+                                            <Text note>
+                                                {formatDate(exercise.last_workout_date, timeZone)}
+                                            </Text>
                                         )}
                                     </Body>
                                 </ListItem>

@@ -25,11 +25,17 @@ class ExerciseHistoryScreen extends Component {
                                 <ListItem key={h.workout_id}>
                                     <Body>
                                         {h.bh_weight == null && (<>
-                                            <Text>{`Левая ${h.lh_weight} кг. / ${h.lh_value} повт.`}</Text>
-                                            <Text>{`Правая ${h.rh_weight} кг. / ${h.rh_value} повт.`}</Text>
+                                            <Text>
+                                                {`Левая ${h.lh_weight} кг. / ${h.lh_value} повт.`}
+                                            </Text>
+                                            <Text>
+                                                {`Правая ${h.rh_weight} кг. / ${h.rh_value} повт.`}
+                                            </Text>
                                         </>)}
                                         {h.bh_weight != null && (
-                                            <Text>{`${h.bh_weight} кг. / ${h.bh_value} повт.`}</Text>
+                                            <Text>
+                                                {`${h.bh_weight} кг. / ${h.bh_value} повт.`}
+                                            </Text>
                                         )}
                                         <Text note>{formatDate(h.workout_date, timeZone)}</Text>
                                     </Body>
