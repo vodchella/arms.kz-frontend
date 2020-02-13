@@ -7,18 +7,16 @@ import {
 } from 'react-native'
 import styles from '../styles'
 
-const WorkoutsScreen = () => {
-    return (<>
-        <SafeAreaView style={{ height: '100%' }}>
-            <ScrollView contentInsetAdjustmentBehavior='automatic' style={styles.scrollView}>
-                <View style={styles.body}>
-                    <View style={styles.sectionContainer}>
-                        <Text style={styles.sectionTitle}>Тренировки</Text>
-                    </View>
+const WorkoutsScreen = () => (
+    <SafeAreaView style={{ height: '100%' }}>
+        <ScrollView contentInsetAdjustmentBehavior='automatic' style={styles.scrollView}>
+            <View style={styles.body}>
+                <View style={styles.sectionContainer}>
+                    <Text style={styles.sectionTitle}>Тренировки</Text>
                 </View>
-            </ScrollView>
-        </SafeAreaView>
-    </>)
-}
+            </View>
+        </ScrollView>
+    </SafeAreaView>
+)
 
 export default WorkoutsScreen
