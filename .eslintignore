@@ -1,0 +1,7 @@
+android/
+ios/
+node_modules/
+src/styles/native-base-theme/components/
+src/styles/native-base-theme/variables/commonColor.js
+src/styles/native-base-theme/variables/material.js
+src/styles/native-base-theme/variables/platform.js
