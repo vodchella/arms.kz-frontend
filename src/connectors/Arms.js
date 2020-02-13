@@ -5,6 +5,18 @@ class Arms {
         requestArms(null, 'POST', `signin/google?token=${googleToken}`, onOk, onFail)
     }
 
+    registerByGoogleToken(googleToken, onOk, onFail) {
+        requestArms(null, 'POST', `register/google?token=${googleToken}`, onOk, onFail)
+    }
+
+    checkToken(token, onOk, onFail) {
+        requestArms(token, 'GET', 'token/check', onOk, onFail)
+    }
+
+    refreshToken(token, onOk, onFail) {
+        requestArms(token, 'POST', 'token/refresh', onOk, onFail)
+    }
+
     listExercises(token, onOk, onFail) {
         requestArms(token, 'GET', 'exercise/list', onOk, onFail)
     }

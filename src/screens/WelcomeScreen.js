@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import AsyncStorage from '@react-native-community/async-storage'
 import {
     View,
     Text,
@@ -23,53 +24,115 @@ class WelcomeScreen extends Component {
     }
 
     componentDidMount() {
-        this._isSignedIn()
-    }
-
-    signInArms = (googleToken) => {
-        const { setTokens } = this.props
-        arms.signInByGoogleToken(googleToken, (tokens) => {
-            setTokens(tokens)
-            console.log('Arms tokens --> ', tokens)
-        }, () => {
-            setTokens(null)
+        this.loadTokensFromStore().then((tokens) => {
+            console.log('Try auth with token from store: ', tokens.auth)
+            arms.checkToken(tokens.auth, (userInfo) => {
+                console.log('User info from Arms: ', JSON.stringify(userInfo))
+                const { setGoogleUserInfo } = this.props
+                setGoogleUserInfo({
+                    user: {
+                        ...userInfo,
+                        photo: userInfo.picture,
+                    }
+                })
+                this.setState({ gettingLoginStatus: false })
+                console.log('Auth token Ok')
+            }, () => {
+                console.log('Auth token failed, trying to refresh: ', tokens.refresh)
+                arms.refreshToken(tokens.refresh, (newTokens) => {
+                    const { setTokens } = this.props
+                    setTokens(newTokens)
+                    this.saveTokensToStore(newTokens)
+                    this.setState({ gettingLoginStatus: false })
+                }, () => {
+                    console.log('Refresh token failed, trying to signin by Google')
+                    this.checkGoogleUserIsSignedIn()
+                })
+            })
+        }).catch(() => {
+            console.log('No tokens in store, trying to signin by Google')
+            this.checkGoogleUserIsSignedIn()
         })
     }
 
-    _isSignedIn = async () => {
-        const isSignedIn = await GoogleSignin.isSignedIn()
-        if (isSignedIn) {
-            this._getCurrentUserInfo()
-        }
-        this.setState({ gettingLoginStatus: false })
-    }
-
-    _getCurrentUserInfo = async () => {
-        const { setGoogleUserInfo } = this.props
+    getCurrentGoogleUserInfo = async () => {
         try {
             const googleUserInfo = await GoogleSignin.signInSilently()
-            setGoogleUserInfo(googleUserInfo)
-            console.log('User Info --> ', googleUserInfo)
-            this.signInArms(googleUserInfo.idToken)
+            this.signInArms(googleUserInfo)
         } catch (error) {
             if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-                console.log('User has not signed in yet')
+                console.log('User has not signed in Google yet')
             } else {
                 console.log('Something went wrong. Unable to get user\'s info')
             }
         }
     }
 
-    _signIn = async () => {
-        const { setGoogleUserInfo } = this.props
+    checkGoogleUserIsSignedIn = async () => {
+        const isSignedIn = await GoogleSignin.isSignedIn()
+        if (isSignedIn) {
+            this.getCurrentGoogleUserInfo()
+        }
+        this.setState({ gettingLoginStatus: false })
+    }
+
+    saveTokensToStore = async (tokens) => {
+        try {
+            await AsyncStorage.setItem('tokens', JSON.stringify(tokens))
+        } catch (e) {
+            console.log('Can\'t save tokens to storage')
+        }
+    }
+
+    loadTokensFromStore = async () => {
+        try {
+            const tokensString = await AsyncStorage.getItem('tokens')
+            const tokens = JSON.parse(tokensString)
+            const { setTokens } = this.props
+            setTokens(tokens)
+            console.log('Tokens from store --> ', tokens)
+            return tokens
+        } catch (e) {
+            console.log('Can\'t load tokens from storage')
+        }
+    }
+
+    signInArms = async (googleUserInfo) => {
+        const { idToken: googleToken } = googleUserInfo
+        const { setTokens, setGoogleUserInfo } = this.props
+        const tokensOk = (tokens) => {
+            setTokens(tokens)
+            this.saveTokensToStore(tokens)
+            setGoogleUserInfo(googleUserInfo)
+            console.log('Google User Info --> ', googleUserInfo)
+        }
+        arms.signInByGoogleToken(googleToken, (tokens) => {
+            tokensOk(tokens)
+            console.log('Sign in Arms ok')
+        }, ({ error }) => {
+            // TODO: special error code for this situation on backend
+            if (error.code === -32002 && error.message === 'Пользователь заблокирован') {
+                console.log('You are blocked!')
+            } else {
+                console.log('Sign in Arms failed, trying to register')
+                arms.registerByGoogleToken(googleToken, (tokens) => {
+                    tokensOk(tokens)
+                    console.log('Register in Arms ok')
+                }, () => {
+                    setTokens(null)
+                    console.log('Register in Arms failed')
+                })
+            }
+        })
+    }
+
+    signInGoogle = async () => {
         try {
             await GoogleSignin.hasPlayServices({
                 showPlayServicesUpdateDialog: true,
             })
             const googleUserInfo = await GoogleSignin.signIn()
-            setGoogleUserInfo(googleUserInfo)
-            console.log('User Info --> ', googleUserInfo)
-            this.signInArms(googleUserInfo.idToken)
+            this.signInArms(googleUserInfo)
         } catch (error) {
             console.log('Message', error.message)
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -84,12 +147,14 @@ class WelcomeScreen extends Component {
         }
     }
 
-    _signOut = async () => {
-        const { setGoogleUserInfo } = this.props
+    signOutGoogle = async () => {
+        const { setGoogleUserInfo, setTokens } = this.props
         try {
             await GoogleSignin.revokeAccess()
             await GoogleSignin.signOut()
             setGoogleUserInfo(null)
+            setTokens(null)
+            this.saveTokensToStore(null)
         } catch (error) {
             console.error(error)
         }
@@ -117,7 +182,7 @@ class WelcomeScreen extends Component {
                     <Text style={styles.text}>
                         Email: {googleUserInfo.user.email}
                     </Text>
-                    <TouchableOpacity style={styles.button} onPress={this._signOut}>
+                    <TouchableOpacity style={styles.button} onPress={this.signOutGoogle}>
                         <Text>Logout</Text>
                     </TouchableOpacity>
                 </View>
@@ -129,7 +194,7 @@ class WelcomeScreen extends Component {
                     style={{ width: 312, height: 48 }}
                     size={GoogleSigninButton.Size.Wide}
                     color={GoogleSigninButton.Color.Light}
-                    onPress={this._signIn}
+                    onPress={this.signInGoogle}
                 />
             </View>
         )
