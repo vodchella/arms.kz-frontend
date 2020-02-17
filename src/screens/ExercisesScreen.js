@@ -5,11 +5,8 @@ import { Container, Content, List, ListItem, Text, Body } from 'native-base'
 import * as RNLocalize from 'react-native-localize'
 import { formatDate } from '../utils/Dates'
 import Waiting from '../components/Waiting'
-import arms from '../connectors/Arms'
 import * as RouteNames from '../constants/RouteNames'
 import * as Colors from '../constants/Colors'
-import * as ex from '../redux/exercises'
-import * as ui from '../redux/ui'
 import * as thunk from '../thunk'
 
 class ExercisesScreen extends Component {
@@ -19,30 +16,9 @@ class ExercisesScreen extends Component {
     }
 
     openExerciseHistory = (exerciseId, exerciseName) => {
-        const {
-            navigation,
-            setExerciseHistoryLoading,
-            setExerciseHistory,
-            setExerciseHistoryInfo,
-            tokens
-        } = this.props
-
-        if (tokens) {
-            const { auth: authToken } = tokens
-            setExerciseHistoryLoading(true)
-            setExerciseHistory([])
-            setTimeout(() => {
-                arms.getExerciseHistory(authToken, exerciseId,
-                    (history) => {
-                        setExerciseHistoryInfo(exerciseId, exerciseName)
-                        setExerciseHistory(history)
-                        setExerciseHistoryLoading(false)
-                    }, () => {
-                        setExerciseHistoryLoading(false)
-                    })
-            }, 1000)
-            navigation.navigate(RouteNames.EXERCISE_HISTORY)
-        }
+        const { navigation, refreshExerciseHistory } = this.props
+        refreshExerciseHistory(exerciseId, exerciseName)
+        navigation.navigate(RouteNames.EXERCISE_HISTORY)
     }
 
     render() {
@@ -83,15 +59,12 @@ class ExercisesScreen extends Component {
 const mapStateToProps = state => ({
     exercisesList: state.exercises.list,
     isExercisesListLoading: state.ui.isExercisesListLoading,
-    tokens: state.auth.tokens,
 })
 
 const mapDispatchToProps = (dispatch) => ({
     ...bindActionCreators({
         refreshExercises: thunk.refreshExercises,
-        setExerciseHistory: ex.setExerciseHistory,
-        setExerciseHistoryLoading: ui.setExerciseHistoryLoading,
-        setExerciseHistoryInfo: ui.setExerciseHistoryInfo,
+        refreshExerciseHistory: thunk.refreshExerciseHistory,
     }, dispatch),
     dispatch
 })

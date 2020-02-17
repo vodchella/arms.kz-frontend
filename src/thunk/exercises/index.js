@@ -20,3 +20,24 @@ export function refreshExercises() {
         }
     }
 }
+
+export function refreshExerciseHistory(exerciseId, exerciseName) {
+    return (dispatch, getState) => {
+        const { tokens } = getState().auth
+        if (tokens) {
+            const { auth: authToken } = tokens
+            dispatch(ui.setExerciseHistoryLoading(true))
+            dispatch(ex.setExerciseHistory([]))
+            setTimeout(() => {
+                arms.getExerciseHistory(authToken, exerciseId,
+                    (history) => {
+                        dispatch(ui.setExerciseHistoryInfo(exerciseId, exerciseName))
+                        dispatch(ex.setExerciseHistory(history))
+                        dispatch(ui.setExerciseHistoryLoading(false))
+                    }, () => {
+                        dispatch(ui.setExerciseHistoryLoading(false))
+                    })
+            }, 1000)
+        }
+    }
+}
