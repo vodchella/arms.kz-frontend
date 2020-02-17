@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Container, Content, List, ListItem, Text, Body } from 'native-base'
 import * as RNLocalize from 'react-native-localize'
@@ -9,23 +10,12 @@ import * as RouteNames from '../constants/RouteNames'
 import * as Colors from '../constants/Colors'
 import * as ex from '../redux/exercises'
 import * as ui from '../redux/ui'
+import * as thunk from '../thunk'
 
 class ExercisesScreen extends Component {
     componentDidMount() {
-        const { setExercisesList, setExercisesListLoading, tokens } = this.props
-        if (tokens) {
-            const { auth: authToken } = tokens
-            setExercisesListLoading(true)
-            setExercisesList([])
-            setTimeout(() => {
-                arms.listExercises(authToken, (exercises) => {
-                    setExercisesList(exercises)
-                    setExercisesListLoading(false)
-                }, () => {
-                    setExercisesListLoading(false)
-                })
-            }, 1000)
-        }
+        const { refreshExercises } = this.props
+        refreshExercises()
     }
 
     openExerciseHistory = (exerciseId, exerciseName) => {
@@ -96,12 +86,14 @@ const mapStateToProps = state => ({
     tokens: state.auth.tokens,
 })
 
-const mapDispatchToProps = {
-    setExercisesList: ex.setExercisesList,
-    setExerciseHistory: ex.setExerciseHistory,
-    setExercisesListLoading: ui.setExercisesListLoading,
-    setExerciseHistoryLoading: ui.setExerciseHistoryLoading,
-    setExerciseHistoryInfo: ui.setExerciseHistoryInfo,
-}
+const mapDispatchToProps = (dispatch) => ({
+    ...bindActionCreators({
+        refreshExercises: thunk.refreshExercises,
+        setExerciseHistory: ex.setExerciseHistory,
+        setExerciseHistoryLoading: ui.setExerciseHistoryLoading,
+        setExerciseHistoryInfo: ui.setExerciseHistoryInfo,
+    }, dispatch),
+    dispatch
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExercisesScreen)

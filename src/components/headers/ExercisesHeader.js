@@ -1,46 +1,18 @@
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Button } from 'native-base'
 import IconForButton from '../IconForButton'
-import arms from '../../connectors/Arms'
-import * as ex from '../../redux/exercises'
-import * as ui from '../../redux/ui'
+import * as thunk from '../../thunk'
 
 class ExercisesHeader extends Component {
-    state = {
-        buttonDisabled: false,
-    }
-
-    onButtonPress = () => {
-        const { setExercisesList, setExercisesListLoading, tokens } = this.props
-        if (tokens) {
-            this.setState({ buttonDisabled: true })
-            setExercisesListLoading(true)
-            setExercisesList([])
-            setTimeout(this.refreshExercises, 1000)
-        }
-    }
-
-    refreshExercises = () => {
-        const { setExercisesList, setExercisesListLoading, tokens } = this.props
-        const { auth: authToken } = tokens
-        arms.listExercises(authToken, (exercises) => {
-            setExercisesList(exercises)
-            setExercisesListLoading(false)
-            this.setState({ buttonDisabled: false })
-        }, () => {
-            setExercisesListLoading(false)
-            this.setState({ buttonDisabled: false })
-        })
-    }
-
     render() {
-        const { buttonDisabled } = this.state
+        const { isExercisesListLoading, refreshExercises } = this.props
         return (
             <Button
                 transparent
-                disabled={buttonDisabled}
-                onPress={this.onButtonPress}
+                disabled={isExercisesListLoading}
+                onPress={refreshExercises}
             >
                 <IconForButton name='refresh' onTransparent />
             </Button>
@@ -49,12 +21,14 @@ class ExercisesHeader extends Component {
 }
 
 const mapStateToProps = state => ({
-    tokens: state.auth.tokens,
+    isExercisesListLoading: state.ui.isExercisesListLoading,
 })
 
-const mapDispatchToProps = {
-    setExercisesList: ex.setExercisesList,
-    setExercisesListLoading: ui.setExercisesListLoading,
-}
+const mapDispatchToProps = (dispatch) => ({
+    ...bindActionCreators({
+        refreshExercises: thunk.refreshExercises,
+    }, dispatch),
+    dispatch
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExercisesHeader)

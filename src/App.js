@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import 'moment/locale/ru'
 import moment from 'moment-timezone'
 import { StatusBar } from 'react-native'
-import { combineReducers, createStore } from 'redux'
+import { combineReducers, createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
 import { StyleProvider } from 'native-base'
 import { GoogleSignin } from 'react-native-google-signin'
 import { GOOGLE_CLIENT_ID } from 'react-native-dotenv'
@@ -21,7 +22,7 @@ const rootReducer = combineReducers({
     ui,
     auth,
 })
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 moment.locale('ru')
 
