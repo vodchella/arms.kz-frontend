@@ -2,22 +2,17 @@ import React, { Component } from 'react'
 import { StackActions, NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import AsyncStorage from '@react-native-community/async-storage'
-import {
-    View,
-    Text,
-    StyleSheet,
-    Image,
-    ActivityIndicator,
-    TouchableOpacity,
-} from 'react-native'
+import { Image } from 'react-native'
+import { Container, Content } from 'native-base'
 import {
     GoogleSignin,
     GoogleSigninButton,
     statusCodes,
 } from 'react-native-google-signin'
+import Spinner from 'react-native-spinkit'
 import arms from '../connectors/Arms'
 import * as auth from '../redux/auth'
-import * as RouteNames from '../constants/RouteNames'
+import * as Colors from '../constants/Colors'
 
 class WelcomeScreen extends Component {
     state = {
@@ -26,35 +21,38 @@ class WelcomeScreen extends Component {
     }
 
     componentDidMount() {
-        this.loadTokensFromStore().then((tokens) => {
-            console.log('Try auth with token from store: ', tokens.auth)
-            arms.checkToken(tokens.auth, (userInfo) => {
-                console.log('User info from Arms: ', JSON.stringify(userInfo))
-                this.updateUserInfo(userInfo)
-                this.setState({ gettingLoginStatus: false })
-                console.log('Auth token Ok')
-            }, () => {
-                console.log('Auth token failed, trying to refresh: ', tokens.refresh)
-                arms.refreshToken(tokens.refresh, (newTokens) => {
-                    const { setTokens } = this.props
-                    setTokens(newTokens)
-                    this.saveTokensToStore(newTokens)
-                    arms.checkToken(newTokens.auth, (info) => {
-                        this.updateUserInfo(info)
-                        this.setState({ gettingLoginStatus: false })
-                    }, () => {
-                        this.setState({ gettingLoginStatus: false })
-                    })
-                    console.log('Refresh token Ok')
+        setTimeout(() => {
+            this.loadTokensFromStore().then((tokens) => {
+                console.log('Try auth with token from store: ', tokens.auth)
+                arms.checkToken(tokens.auth, (userInfo) => {
+                    console.log('User info from Arms: ', JSON.stringify(userInfo))
+                    this.updateUserInfo(userInfo)
+                    this.setState({ gettingLoginStatus: false })
+                    this.go()
+                    console.log('Auth token Ok')
                 }, () => {
-                    console.log('Refresh token failed, trying to signin by Google')
-                    this.checkGoogleUserIsSignedIn()
+                    console.log('Auth token failed, trying to refresh: ', tokens.refresh)
+                    arms.refreshToken(tokens.refresh, (newTokens) => {
+                        const { setTokens } = this.props
+                        setTokens(newTokens)
+                        this.saveTokensToStore(newTokens)
+                        arms.checkToken(newTokens.auth, (info) => {
+                            this.updateUserInfo(info)
+                            this.setState({ gettingLoginStatus: false })
+                        }, () => {
+                            this.setState({ gettingLoginStatus: false })
+                        })
+                        console.log('Refresh token Ok')
+                    }, () => {
+                        console.log('Refresh token failed, trying to signin by Google')
+                        this.checkGoogleUserIsSignedIn()
+                    })
                 })
+            }).catch(() => {
+                console.log('No tokens in store, trying to signin by Google')
+                this.checkGoogleUserIsSignedIn()
             })
-        }).catch(() => {
-            console.log('No tokens in store, trying to signin by Google')
-            this.checkGoogleUserIsSignedIn()
-        })
+        }, 2000)
     }
 
     getCurrentGoogleUserInfo = async () => {
@@ -111,7 +109,7 @@ class WelcomeScreen extends Component {
 
     signInArms = async (googleUserInfo) => {
         const { idToken: googleToken } = googleUserInfo
-        const { setTokens, setGoogleUserInfo, navigation } = this.props
+        const { setTokens, setGoogleUserInfo } = this.props
         const tokensOk = (tokens) => {
             setTokens(tokens)
             this.saveTokensToStore(tokens)
@@ -185,69 +183,34 @@ class WelcomeScreen extends Component {
     }
 
     render() {
-        if (this.state.gettingLoginStatus) {
-            return (
-                <View style={styles.container}>
-                    <ActivityIndicator size='large' color='#0000ff' />
-                </View>
-            )
-        }
+        const { gettingLoginStatus } = this.state
         const { googleUserInfo } = this.props
-        if (googleUserInfo != null) {
-            return (
-                <View style={styles.container}>
-                    <Image
-                        source={{ uri: googleUserInfo.user.photo }}
-                        style={styles.imageStyle}
-                    />
-                    <Text style={styles.text}>
-                        Name: {googleUserInfo.user.name}{' '}
-                    </Text>
-                    <Text style={styles.text}>
-                        Email: {googleUserInfo.user.email}
-                    </Text>
-                    <TouchableOpacity style={styles.button} onPress={this.signOutGoogle}>
-                        <Text>Logout</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={this.go}>
-                        <Text>Go!</Text>
-                    </TouchableOpacity>
-                </View>
-            )
-        }
-        return (
-            <View style={styles.container}>
-                <GoogleSigninButton
-                    style={{ width: 312, height: 48 }}
-                    size={GoogleSigninButton.Size.Wide}
-                    color={GoogleSigninButton.Color.Light}
-                    onPress={this.signInGoogle}
+        return (<Container style={{ backgroundColor: Colors.SURFACE }}>
+            <Content contentContainerStyle={{ justifyContent: 'center', flex: 1 }}>
+                <Image
+                    style={{ alignSelf: 'center', marginBottom: 10 }}
+                    source={
+                        require('../../android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png')
+                    }
                 />
-            </View>
-        )
+                {gettingLoginStatus && (
+                    <Spinner
+                        type='ThreeBounce'
+                        style={{ color: Colors.PRIMARY, width: '100%', marginBottom: 50 }}
+                    />
+                )}
+                {(googleUserInfo === null && !gettingLoginStatus) && (
+                    <GoogleSigninButton
+                        style={{ alignSelf: 'center' }}
+                        size={GoogleSigninButton.Size.Wide}
+                        color={GoogleSigninButton.Color.Auto}
+                        onPress={this.signInGoogle}
+                    />
+                )}
+            </Content>
+        </Container>)
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    imageStyle: {
-        width: 200,
-        height: 300,
-        resizeMode: 'contain',
-    },
-    button: {
-        alignItems: 'center',
-        backgroundColor: '#DDDDDD',
-        padding: 10,
-        width: 300,
-        marginTop: 30,
-    },
-})
 
 const mapStateToProps = state => ({
     googleUserInfo: state.auth.googleUserInfo,
