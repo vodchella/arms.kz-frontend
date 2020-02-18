@@ -55,16 +55,6 @@ class WelcomeScreen extends Component {
         })
     }
 
-    updateUserInfo = (userInfo) => {
-        const { setGoogleUserInfo } = this.props
-        setGoogleUserInfo({
-            user: {
-                ...userInfo,
-                photo: userInfo.picture,
-            }
-        })
-    }
-
     getCurrentGoogleUserInfo = async () => {
         try {
             const googleUserInfo = await GoogleSignin.signInSilently()
@@ -76,6 +66,16 @@ class WelcomeScreen extends Component {
                 console.log('Something went wrong. Unable to get user\'s info')
             }
         }
+    }
+
+    updateUserInfo = (userInfo) => {
+        const { setGoogleUserInfo } = this.props
+        setGoogleUserInfo({
+            user: {
+                ...userInfo,
+                photo: userInfo.picture,
+            }
+        })
     }
 
     checkGoogleUserIsSignedIn = async () => {
