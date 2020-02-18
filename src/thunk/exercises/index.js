@@ -1,43 +1,43 @@
+import worker from '../Worker'
 import arms from '../../connectors/Arms'
 import * as ex from '../../redux/exercises'
 import * as ui from '../../redux/ui'
 
 export function refreshExercises() {
-    return (dispatch, getState) => {
-        const { tokens } = getState().auth
-        if (tokens) {
-            const { auth: authToken } = tokens
-            dispatch(ex.setExercisesList([]))
-            dispatch(ui.setExercisesListLoading(true))
-            setTimeout(() => {
-                arms.listExercises(authToken, (exercises) => {
-                    dispatch(ex.setExercisesList(exercises))
-                    dispatch(ui.setExercisesListLoading(false))
-                }, () => {
-                    dispatch(ui.setExercisesListLoading(false))
-                })
-            }, 1000)
+    return worker(
+        arms.listExercises,
+        null,
+        {
+            onBeg: (dispatch) => {
+                dispatch(ex.setExercisesList([]))
+                dispatch(ui.setExercisesListLoading(true))
+            },
+            onOk: (exercises, dispatch) => {
+                dispatch(ex.setExercisesList(exercises))
+            },
+            onFin: (dispatch) => {
+                dispatch(ui.setExercisesListLoading(false))
+            },
         }
-    }
+    )
 }
 
 export function refreshExerciseHistory(exerciseId, exerciseName) {
-    return (dispatch, getState) => {
-        const { tokens } = getState().auth
-        if (tokens) {
-            const { auth: authToken } = tokens
-            dispatch(ui.setExerciseHistoryLoading(true))
-            dispatch(ex.setExerciseHistory([]))
-            setTimeout(() => {
-                arms.getExerciseHistory(authToken, exerciseId,
-                    (history) => {
-                        dispatch(ui.setExerciseHistoryInfo(exerciseId, exerciseName))
-                        dispatch(ex.setExerciseHistory(history))
-                        dispatch(ui.setExerciseHistoryLoading(false))
-                    }, () => {
-                        dispatch(ui.setExerciseHistoryLoading(false))
-                    })
-            }, 1000)
+    return worker(
+        arms.getExerciseHistory,
+        exerciseId,
+        {
+            onBeg: (dispatch) => {
+                dispatch(ui.setExerciseHistoryLoading(true))
+                dispatch(ex.setExerciseHistory([]))
+            },
+            onOk: (history, dispatch) => {
+                dispatch(ui.setExerciseHistoryInfo(exerciseId, exerciseName))
+                dispatch(ex.setExerciseHistory(history))
+            },
+            onFin: (dispatch) => {
+                dispatch(ui.setExerciseHistoryLoading(false))
+            },
         }
-    }
+    )
 }
