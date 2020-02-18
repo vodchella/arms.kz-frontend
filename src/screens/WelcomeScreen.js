@@ -28,13 +28,7 @@ class WelcomeScreen extends Component {
             console.log('Try auth with token from store: ', tokens.auth)
             arms.checkToken(tokens.auth, (userInfo) => {
                 console.log('User info from Arms: ', JSON.stringify(userInfo))
-                const { setGoogleUserInfo } = this.props
-                setGoogleUserInfo({
-                    user: {
-                        ...userInfo,
-                        photo: userInfo.picture,
-                    }
-                })
+                this.updateUserInfo(userInfo)
                 this.setState({ gettingLoginStatus: false })
                 console.log('Auth token Ok')
             }, () => {
@@ -43,7 +37,13 @@ class WelcomeScreen extends Component {
                     const { setTokens } = this.props
                     setTokens(newTokens)
                     this.saveTokensToStore(newTokens)
-                    this.setState({ gettingLoginStatus: false })
+                    arms.checkToken(newTokens.auth, (info) => {
+                        this.updateUserInfo(info)
+                        this.setState({ gettingLoginStatus: false })
+                    }, () => {
+                        this.setState({ gettingLoginStatus: false })
+                    })
+                    console.log('Refresh token Ok')
                 }, () => {
                     console.log('Refresh token failed, trying to signin by Google')
                     this.checkGoogleUserIsSignedIn()
@@ -52,6 +52,16 @@ class WelcomeScreen extends Component {
         }).catch(() => {
             console.log('No tokens in store, trying to signin by Google')
             this.checkGoogleUserIsSignedIn()
+        })
+    }
+
+    updateUserInfo = (userInfo) => {
+        const { setGoogleUserInfo } = this.props
+        setGoogleUserInfo({
+            user: {
+                ...userInfo,
+                photo: userInfo.picture,
+            }
         })
     }
 
