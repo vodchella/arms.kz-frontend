@@ -1,7 +1,6 @@
 import React from 'react'
 import { createDrawerNavigator } from 'react-navigation-drawer'
 import { createStackNavigator, CardStyleInterpolators } from 'react-navigation-stack'
-import WelcomeScreen from '../../screens/WelcomeScreen'
 import WorkoutsScreen from '../../screens/WorkoutsScreen'
 import ExercisesScreen from '../../screens/ExercisesScreen'
 import ExerciseHistoryScreen from '../../screens/ExerciseHistoryScreen'
@@ -44,15 +43,9 @@ const DrawerNavigator = createDrawerNavigator({
             title: ROUTE_PROPS[RouteNames.EXERCISES].title
         }
     },
-    [RouteNames.WELCOME]: {
-        screen: WelcomeScreen,
-        navigationOptions: {
-            title: ROUTE_PROPS[RouteNames.WELCOME].title
-        }
-    },
 }, {
     headerMode: 'float',
-    initialRouteName: RouteNames.WELCOME,
+    initialRouteName: RouteNames.EXERCISES,
     contentComponent: DrawerContainer,
     drawerType: 'front',
     contentOptions: {

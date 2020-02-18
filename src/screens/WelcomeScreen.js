@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { StackActions, NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import AsyncStorage from '@react-native-community/async-storage'
 import {
@@ -16,6 +17,7 @@ import {
 } from 'react-native-google-signin'
 import arms from '../connectors/Arms'
 import * as auth from '../redux/auth'
+import * as RouteNames from '../constants/RouteNames'
 
 class WelcomeScreen extends Component {
     state = {
@@ -109,7 +111,7 @@ class WelcomeScreen extends Component {
 
     signInArms = async (googleUserInfo) => {
         const { idToken: googleToken } = googleUserInfo
-        const { setTokens, setGoogleUserInfo } = this.props
+        const { setTokens, setGoogleUserInfo, navigation } = this.props
         const tokensOk = (tokens) => {
             setTokens(tokens)
             this.saveTokensToStore(tokens)
@@ -118,6 +120,7 @@ class WelcomeScreen extends Component {
         }
         arms.signInByGoogleToken(googleToken, (tokens) => {
             tokensOk(tokens)
+            this.go()
             console.log('Sign in Arms ok')
         }, ({ error }) => {
             // TODO: special error code for this situation on backend
@@ -170,6 +173,17 @@ class WelcomeScreen extends Component {
         }
     }
 
+    go = () => {
+        const { navigation } = this.props
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'DrawerStack' }),
+            ],
+        })
+        navigation.dispatch(resetAction)
+    }
+
     render() {
         if (this.state.gettingLoginStatus) {
             return (
@@ -194,6 +208,9 @@ class WelcomeScreen extends Component {
                     </Text>
                     <TouchableOpacity style={styles.button} onPress={this.signOutGoogle}>
                         <Text>Logout</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={this.go}>
+                        <Text>Go!</Text>
                     </TouchableOpacity>
                 </View>
             )
