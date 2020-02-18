@@ -1,4 +1,5 @@
 import arms from '../connectors/Arms'
+import * as auth from '../redux/auth'
 
 function callFun(fn, res, dispatch, getState) {
     if (typeof fn === 'function') {
@@ -28,12 +29,12 @@ export default function worker(
     proc,
     params,
     { onBeg, onOk, onErr, onFin } = {},
-    noToken,
     withDelay = true
 ) {
     return (dispatch, getState) => {
         const { tokens } = getState().auth
-        const token = tokens ? tokens.auth : '?'
+        const authToken = tokens ? tokens.auth : '?'
+        const refreshToken = tokens ? tokens.refresh : '?'
 
         callFunNoParam(onBeg, dispatch, getState)
 
@@ -51,16 +52,22 @@ export default function worker(
 
         const procFail = failHandler.bind(null, dispatch, getState, onErr, onFin)
 
-        let args = []
-        if (noToken !== true) {
-            args.push(token)
+        const procTokensRefreshed = (newTokens) => {
+            if (newTokens) {
+                dispatch(auth.setTokens(newTokens))
+            } else {
+                callFunNoParam(onFin, dispatch, getState)
+            }
         }
+
+        let args = []
+        args.push(authToken)
         if (Array.isArray(params)) {
             args = args.concat(params)
         } else if (params !== null) {
             args.push(params)
         }
-        args.push(procOk, procFail)
+        args.push(procOk, procFail, refreshToken, procTokensRefreshed)
         proc.apply(arms, args)
     }
 }

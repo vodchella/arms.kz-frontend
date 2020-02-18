@@ -17,12 +17,14 @@ class Arms {
         requestArms(token, 'POST', 'token/refresh', onOk, onFail)
     }
 
-    listExercises(token, onOk, onFail) {
-        requestArms(token, 'GET', 'exercise/list', onOk, onFail)
+    listExercises(token, onOk, onFail, refreshToken, onTokenRefresh) {
+        requestArms(token, 'GET', 'exercise/list',
+            onOk, onFail, refreshToken, onTokenRefresh)
     }
 
-    getExerciseHistory(token, exerciseId, onOk, onFail) {
-        requestArms(token, 'GET', `exercise/${exerciseId}/history`, onOk, onFail)
+    getExerciseHistory(token, exerciseId, onOk, onFail, refreshToken, onTokenRefresh) {
+        requestArms(token, 'GET', `exercise/${exerciseId}/history`,
+            onOk, onFail, refreshToken, onTokenRefresh)
     }
 }
 

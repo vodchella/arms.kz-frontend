@@ -2,7 +2,7 @@ import { Platform } from 'react-native'
 import { getErrorFromJson } from './Errors'
 import Platforms from '../enums/Platforms'
 
-export function requestArms(token, method, url, onOk, onFail, resultModifier) {
+export function requestArms(token, method, url, onOk, onFail, refreshToken, onTokenRefresh) {
     const baseUrl = 'https://arms.kz/'
     const apiUrl = `${baseUrl}api/v1/`
     const requestUrl = `${apiUrl}${url}`
@@ -27,21 +27,32 @@ export function requestArms(token, method, url, onOk, onFail, resultModifier) {
         if (response.ok) {
             if (isJson) {
                 response.json().then((responseJson) => {
-                    let result = responseJson
-                    if (resultModifier) {
-                        result = resultModifier(responseJson)
-                    }
-                    onOk(result)
+                    onOk(responseJson)
                 })
             } else {
                 invalidContentType = true
             }
         } else if (isJson) {
             response.json().then((responseJson) => {
-                if (onFail) {
+                const doRefresh = response.status === 403 &&
+                    url !== 'token/refresh' &&
+                    typeof onTokenRefresh === 'function' && refreshToken
+                if (doRefresh) {
+                    requestArms(refreshToken,
+                        'POST',
+                        'token/refresh',
+                        (tokens) => {
+                            onTokenRefresh(tokens)
+                            requestArms(tokens.auth, method, url, onOk, onFail)
+                        },
+                        () => {
+                            onTokenRefresh(null)
+                        }
+                    )
+                } else if (onFail) {
                     onFail(responseJson)
+                    console.warn(getErrorFromJson(responseJson))
                 }
-                console.warn(getErrorFromJson(responseJson))
             })
         } else {
             invalidContentType = true
