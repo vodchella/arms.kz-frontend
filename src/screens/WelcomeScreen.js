@@ -13,6 +13,7 @@ import Spinner from 'react-native-spinkit'
 import arms from '../connectors/Arms'
 import * as auth from '../redux/auth'
 import * as Colors from '../constants/Colors'
+import { ERROR_USER_IS_BLOCKED } from '../constants/ErrorCodes'
 
 class WelcomeScreen extends Component {
     state = {
@@ -121,8 +122,7 @@ class WelcomeScreen extends Component {
             this.go()
             console.log('Sign in Arms ok')
         }, ({ error }) => {
-            // TODO: special error code for this situation on backend
-            if (error.code === -32002 && error.message === 'Пользователь заблокирован') {
+            if (error.code === ERROR_USER_IS_BLOCKED) {
                 console.log('You are blocked!')
             } else {
                 console.log('Sign in Arms failed, trying to register')
