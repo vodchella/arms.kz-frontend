@@ -40,6 +40,7 @@ class WelcomeScreen extends Component {
                         arms.checkToken(newTokens.auth, (info) => {
                             this.updateUserInfo(info)
                             this.setState({ gettingLoginStatus: false })
+                            this.go()
                         }, () => {
                             this.setState({ gettingLoginStatus: false })
                         })
