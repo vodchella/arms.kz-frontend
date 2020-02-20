@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Container, Content, List, ListItem, Text, Body } from 'native-base'
+import { Container, List, ListItem, Text, Body, Icon, View } from 'native-base'
+import FAB from 'react-native-fab'
 import * as RNLocalize from 'react-native-localize'
 import { formatDate } from '../utils/Dates'
 import Waiting from '../components/Waiting'
@@ -21,6 +22,8 @@ class ExercisesScreen extends Component {
         navigation.navigate(RouteNames.EXERCISE_HISTORY)
     }
 
+    addExercise = () => {}
+
     render() {
         const { exercisesList, isExercisesListLoading } = this.props
         const timeZone = RNLocalize.getTimeZone()
@@ -30,7 +33,7 @@ class ExercisesScreen extends Component {
                     <Waiting />
                 )}
                 {!isExercisesListLoading && (
-                    <Content>
+                    <View style={{ flex: 1 }}>
                         <List>
                             {exercisesList.map(exercise => (
                                 <ListItem
@@ -50,7 +53,14 @@ class ExercisesScreen extends Component {
                                 </ListItem>
                             ))}
                         </List>
-                    </Content>
+                        <FAB
+                            buttonColor={Colors.PRIMARY}
+                            iconTextColor={Colors.ON_PRIMARY}
+                            onClickAction={this.addExercise}
+                            iconTextComponent={<Icon name='add' />}
+                            visible
+                        />
+                    </View>
                 )}
             </Container></>)
     }
