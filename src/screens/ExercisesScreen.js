@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Container, List, ListItem, Text, Body, Icon, View } from 'native-base'
+import { TouchableHighlight, StyleSheet } from 'react-native'
+import { Container, Text, Icon, View, Button } from 'native-base'
 import FAB from 'react-native-fab'
+import { SwipeListView } from 'react-native-swipe-list-view'
 import * as RNLocalize from 'react-native-localize'
 import { formatDate } from '../utils/Dates'
 import Waiting from '../components/Waiting'
 import * as RouteNames from '../constants/RouteNames'
 import * as Colors from '../constants/Colors'
 import * as thunk from '../thunk'
+import IconForButton from '../components/IconForButton'
 
 class ExercisesScreen extends Component {
     componentDidMount() {
@@ -34,25 +37,39 @@ class ExercisesScreen extends Component {
                 )}
                 {!isExercisesListLoading && (
                     <View style={{ flex: 1 }}>
-                        <List>
-                            {exercisesList.map(exercise => (
-                                <ListItem
-                                    key={exercise.id}
+                        <SwipeListView
+                            data={exercisesList}
+                            renderItem={({ item: exercise }) => (
+                                <TouchableHighlight
                                     onPress={
                                         () => this.openExerciseHistory(exercise.id, exercise.name)
                                     }
+                                    style={styles.rowFront}
+                                    underlayColor={Colors.BACKGROUND}
                                 >
-                                    <Body>
+                                    <View style={{ marginLeft: 30 }}>
                                         <Text>{exercise.name}</Text>
                                         {exercise.last_workout_date && (
                                             <Text note>
                                                 {formatDate(exercise.last_workout_date, timeZone)}
                                             </Text>
                                         )}
-                                    </Body>
-                                </ListItem>
-                            ))}
-                        </List>
+                                    </View>
+                                </TouchableHighlight>
+                            )}
+                            renderHiddenItem={({ item: exercise }) => (
+                                <View style={styles.rowBack}>
+                                    <Button>
+                                        <IconForButton name={'settings'} />
+                                    </Button>
+                                    <Button>
+                                        <IconForButton name={'trash'} />
+                                    </Button>
+                                </View>
+                            )}
+                            leftOpenValue={75}
+                            rightOpenValue={-75}
+                        />
                         <FAB
                             buttonColor={Colors.PRIMARY}
                             iconTextColor={Colors.ON_PRIMARY}
@@ -77,6 +94,25 @@ const mapDispatchToProps = (dispatch) => ({
         refreshExerciseHistory: thunk.refreshExerciseHistory,
     }, dispatch),
     dispatch
+})
+
+const styles = StyleSheet.create({
+    rowFront: {
+        backgroundColor: Colors.SURFACE,
+        borderBottomColor: Colors.BACKGROUND,
+        borderBottomWidth: 2,
+        justifyContent: 'center',
+        height: 60,
+    },
+    rowBack: {
+        alignItems: 'center',
+        backgroundColor: Colors.BACKGROUND,
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 12,
+        paddingRight: 12,
+    },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExercisesScreen)
