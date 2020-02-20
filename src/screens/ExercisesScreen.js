@@ -62,7 +62,7 @@ class ExercisesScreen extends Component {
                                     <Button>
                                         <IconForButton name={'settings'} />
                                     </Button>
-                                    <Button>
+                                    <Button danger>
                                         <IconForButton name={'trash'} />
                                     </Button>
                                 </View>
