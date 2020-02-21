@@ -27,7 +27,7 @@ const HeaderComponent = ({ props }) => {
             >
                 <IconForButton name={icon} />
             </Button>
-            <Text style={{ fontSize: 22, paddingLeft: 10 }}>
+            <Text style={{ fontSize: 22, paddingLeft: 20 }}>
                 {ROUTE_PROPS[routeName].title}
             </Text>
         </View>
