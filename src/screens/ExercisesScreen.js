@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { TouchableHighlight } from 'react-native'
 import { Container, Text, Icon, View, Button } from 'native-base'
 import FAB from 'react-native-fab'
 import { SwipeListView } from 'react-native-swipe-list-view'
@@ -13,6 +12,7 @@ import * as Colors from '../constants/Colors'
 import * as thunk from '../thunk'
 import IconForButton from '../components/IconForButton'
 import styles from '../styles'
+import SwipeListItem from '../components/SwipeListItem'
 
 class ExercisesScreen extends Component {
     componentDidMount() {
@@ -41,22 +41,18 @@ class ExercisesScreen extends Component {
                         <SwipeListView
                             data={exercisesList}
                             renderItem={({ item: exercise }) => (
-                                <TouchableHighlight
+                                <SwipeListItem
                                     onPress={
                                         () => this.openExerciseHistory(exercise.id, exercise.name)
                                     }
-                                    style={styles.swipeRowFront}
-                                    underlayColor={Colors.BACKGROUND}
                                 >
-                                    <View style={{ marginLeft: 30 }}>
-                                        <Text>{exercise.name}</Text>
-                                        {exercise.last_workout_date && (
-                                            <Text note>
-                                                {formatDate(exercise.last_workout_date, timeZone)}
-                                            </Text>
-                                        )}
-                                    </View>
-                                </TouchableHighlight>
+                                    <Text>{exercise.name}</Text>
+                                    {exercise.last_workout_date && (
+                                        <Text note>
+                                            {formatDate(exercise.last_workout_date, timeZone)}
+                                        </Text>
+                                    )}
+                                </SwipeListItem>
                             )}
                             renderHiddenItem={({ item: exercise }) => (
                                 <View style={styles.swipeRowBack}>
