@@ -31,7 +31,7 @@ class ExercisesScreen extends Component {
     render() {
         const { exercisesList, isExercisesListLoading } = this.props
         const timeZone = RNLocalize.getTimeZone()
-        return (<>
+        return (
             <Container style={{ backgroundColor: Colors.SURFACE }}>
                 {isExercisesListLoading && (
                     <Waiting />
@@ -76,7 +76,7 @@ class ExercisesScreen extends Component {
                         />
                     </View>
                 )}
-            </Container></>)
+            </Container>)
     }
 }
 

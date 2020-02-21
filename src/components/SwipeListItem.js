@@ -6,11 +6,15 @@ import * as Colors from '../constants/Colors'
 
 class SwipeListItem extends Component {
     render() {
-        const { children, onPress } = this.props
+        const { children, onPress, large } = this.props
+        const height = large === true ? 90 : styles.swipeRowFront.height
         return (
             <TouchableHighlight
                 onPress={onPress}
-                style={styles.swipeRowFront}
+                style={{
+                    ...styles.swipeRowFront,
+                    height
+                }}
                 underlayColor={Colors.BACKGROUND}
             >
                 <View style={{ marginLeft: 30 }}>
