@@ -2,39 +2,21 @@ import { StyleSheet } from 'react-native'
 import * as Colors from '../constants/Colors'
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.BACKGROUND,
-        alignItems: 'center',
+    swipeRowFront: {
+        backgroundColor: Colors.SURFACE,
+        borderBottomColor: Colors.BACKGROUND,
+        borderBottomWidth: 1,
         justifyContent: 'center',
+        height: 60,
     },
-    scrollView: {
+    swipeRowBack: {
+        alignItems: 'center',
         backgroundColor: Colors.BACKGROUND,
-    },
-    engine: {
-        position: 'absolute',
-        right: 0,
-    },
-    body: {
-        backgroundColor: Colors.BACKGROUND,
-    },
-    sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24,
-    },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: '600',
-        color: Colors.ON_BACKGROUND,
-    },
-    sectionDescription: {
-        marginTop: 8,
-        fontSize: 18,
-        fontWeight: '400',
-        color: Colors.ON_BACKGROUND,
-    },
-    highlight: {
-        fontWeight: '700',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 12,
+        paddingRight: 12,
     },
 })
 

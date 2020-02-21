@@ -1,22 +1,9 @@
 import React from 'react'
-import {
-    SafeAreaView,
-    ScrollView,
-    View,
-    Text,
-} from 'react-native'
-import styles from '../styles'
+import { Container } from 'native-base'
+import * as Colors from '../constants/Colors'
 
 const WorkoutsScreen = () => (
-    <SafeAreaView style={{ height: '100%' }}>
-        <ScrollView contentInsetAdjustmentBehavior='automatic' style={styles.scrollView}>
-            <View style={styles.body}>
-                <View style={styles.sectionContainer}>
-                    <Text style={styles.sectionTitle}>Тренировки</Text>
-                </View>
-            </View>
-        </ScrollView>
-    </SafeAreaView>
+    <Container style={{ backgroundColor: Colors.SURFACE }} />
 )
 
 export default WorkoutsScreen

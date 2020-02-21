@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { TouchableHighlight, StyleSheet } from 'react-native'
+import { TouchableHighlight } from 'react-native'
 import { Container, Text, Icon, View, Button } from 'native-base'
 import FAB from 'react-native-fab'
 import { SwipeListView } from 'react-native-swipe-list-view'
@@ -12,6 +12,7 @@ import * as RouteNames from '../constants/RouteNames'
 import * as Colors from '../constants/Colors'
 import * as thunk from '../thunk'
 import IconForButton from '../components/IconForButton'
+import styles from '../styles'
 
 class ExercisesScreen extends Component {
     componentDidMount() {
@@ -44,7 +45,7 @@ class ExercisesScreen extends Component {
                                     onPress={
                                         () => this.openExerciseHistory(exercise.id, exercise.name)
                                     }
-                                    style={styles.rowFront}
+                                    style={styles.swipeRowFront}
                                     underlayColor={Colors.BACKGROUND}
                                 >
                                     <View style={{ marginLeft: 30 }}>
@@ -58,7 +59,7 @@ class ExercisesScreen extends Component {
                                 </TouchableHighlight>
                             )}
                             renderHiddenItem={({ item: exercise }) => (
-                                <View style={styles.rowBack}>
+                                <View style={styles.swipeRowBack}>
                                     <Button>
                                         <IconForButton name={'settings'} />
                                     </Button>
@@ -94,25 +95,6 @@ const mapDispatchToProps = (dispatch) => ({
         refreshExerciseHistory: thunk.refreshExerciseHistory,
     }, dispatch),
     dispatch
-})
-
-const styles = StyleSheet.create({
-    rowFront: {
-        backgroundColor: Colors.SURFACE,
-        borderBottomColor: Colors.BACKGROUND,
-        borderBottomWidth: 2,
-        justifyContent: 'center',
-        height: 60,
-    },
-    rowBack: {
-        alignItems: 'center',
-        backgroundColor: Colors.BACKGROUND,
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingLeft: 12,
-        paddingRight: 12,
-    },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExercisesScreen)
