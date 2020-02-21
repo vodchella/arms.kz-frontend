@@ -12,12 +12,8 @@ export function refreshExercises() {
                 dispatch(ex.setExercisesList([]))
                 dispatch(ui.setExercisesListLoading(true))
             },
-            onOk: (exercises, dispatch) => {
-                dispatch(ex.setExercisesList(exercises))
-            },
-            onFin: (dispatch) => {
-                dispatch(ui.setExercisesListLoading(false))
-            },
+            onOk: (exercises, dispatch) => dispatch(ex.setExercisesList(exercises)),
+            onFin: (dispatch) => dispatch(ui.setExercisesListLoading(false)),
         }
     )
 }
@@ -47,9 +43,7 @@ export function refreshExerciseHistory(exerciseId, exerciseName) {
                 dispatch(ui.setExerciseHistoryInfo(exerciseId, exerciseName))
                 dispatch(ex.setExerciseHistory(history))
             },
-            onFin: (dispatch) => {
-                dispatch(ui.setExerciseHistoryLoading(false))
-            },
+            onFin: (dispatch) => dispatch(ui.setExerciseHistoryLoading(false)),
         }
     )
 }

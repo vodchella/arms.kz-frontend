@@ -36,7 +36,7 @@ class ExercisesScreen extends Component {
             `Удалить '${exerciseName}'?`,
             [
                 { text: 'Да', onPress: () => deleteExercise(exerciseId) },
-                { text: 'Нет', onPress: () => {} },
+                { text: 'Нет' },
             ]
         )
     }
