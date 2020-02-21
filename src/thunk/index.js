@@ -1,6 +1,11 @@
-import { refreshExercises, refreshExerciseHistory } from './exercises'
+import {
+    refreshExercises,
+    deleteExercise,
+    refreshExerciseHistory
+} from './exercises'
 
 export {
     refreshExercises,
+    deleteExercise,
     refreshExerciseHistory,
 }

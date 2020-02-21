@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Alert } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Container, Text, Icon, View, Button } from 'native-base'
@@ -27,6 +28,18 @@ class ExercisesScreen extends Component {
     }
 
     addExercise = () => {}
+
+    removeExercise = (exerciseId, exerciseName) => {
+        const { deleteExercise } = this.props
+        Alert.alert(
+            'Подтверждение',
+            `Удалить '${exerciseName}'?`,
+            [
+                { text: 'Да', onPress: () => deleteExercise(exerciseId) },
+                { text: 'Нет', onPress: () => {} },
+            ]
+        )
+    }
 
     render() {
         const { exercisesList, isExercisesListLoading } = this.props
@@ -59,7 +72,12 @@ class ExercisesScreen extends Component {
                                     <Button>
                                         <IconForButton name={'settings'} />
                                     </Button>
-                                    <Button danger>
+                                    <Button
+                                        danger
+                                        onPress={
+                                            () => this.removeExercise(exercise.id, exercise.name)
+                                        }
+                                    >
                                         <IconForButton name={'trash'} />
                                     </Button>
                                 </View>
@@ -88,6 +106,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => ({
     ...bindActionCreators({
         refreshExercises: thunk.refreshExercises,
+        deleteExercise: thunk.deleteExercise,
         refreshExerciseHistory: thunk.refreshExerciseHistory,
     }, dispatch),
     dispatch

@@ -22,6 +22,18 @@ export function refreshExercises() {
     )
 }
 
+export function deleteExercise(exerciseId) {
+    return worker(
+        arms.deleteExercise,
+        exerciseId,
+        {
+            onBeg: (dispatch) => dispatch(ui.setExercisesListLoading(true)),
+            onOk: (res, dispatch) => dispatch(refreshExercises()),
+            onErr: (dispatch) => dispatch(ui.setExercisesListLoading(false)),
+        }
+    )
+}
+
 export function refreshExerciseHistory(exerciseId, exerciseName) {
     return worker(
         arms.getExerciseHistory,

@@ -22,6 +22,11 @@ class Arms {
             onOk, onFail, refreshToken, onTokenRefresh)
     }
 
+    deleteExercise(token, exerciseId, onOk, onFail, refreshToken, onTokenRefresh) {
+        requestArms(token, 'DELETE', `exercise/${exerciseId}/delete`,
+            onOk, onFail, refreshToken, onTokenRefresh)
+    }
+
     getExerciseHistory(token, exerciseId, onOk, onFail, refreshToken, onTokenRefresh) {
         requestArms(token, 'GET', `exercise/${exerciseId}/history`,
             onOk, onFail, refreshToken, onTokenRefresh)
