@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container } from 'native-base'
+import { Container, Text } from 'native-base'
 import * as Colors from '../constants/Colors'
 import Waiting from '../components/Waiting'
 
 class ExerciseEditorScreen extends Component {
     render() {
-        const { isExerciseEditorLoading } = this.props
+        const { isExerciseEditorLoading, categories } = this.props
         return (
             <Container style={{ backgroundColor: Colors.SURFACE }}>
                 {isExerciseEditorLoading && (
                     <Waiting />
+                )}
+                {!isExerciseEditorLoading && (
+                    <Text>{JSON.stringify(categories)}</Text>
                 )}
             </Container>
         )
@@ -19,6 +22,7 @@ class ExerciseEditorScreen extends Component {
 
 const mapStateToProps = state => ({
     isExerciseEditorLoading: state.ui.isExerciseEditorLoading,
+    categories: state.exercises.categories,
 })
 
 const mapDispatchToProps = {}

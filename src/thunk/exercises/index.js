@@ -45,13 +45,27 @@ export function refreshExerciseHistory(exerciseId) {
     )
 }
 
-export function refreshExerciseCategories() {
+export function refreshExerciseCategories(onFin) {
     return worker(
         arms.listExerciseCategories,
         null,
         {
             onBeg: (dispatch) => dispatch(ex.setExerciseCategoriesList([])),
             onOk: (categories, dispatch) => dispatch(ex.setExerciseCategoriesList(categories)),
+            onFin: (dispatch) => {
+                if (typeof onFin === 'function') {
+                    onFin(dispatch)
+                }
+            }
         }
     )
+}
+
+export function prepareExerciseCreation() {
+    return (dispatch) => {
+        dispatch(ui.setExerciseEditorLoading(true))
+        dispatch(refreshExerciseCategories(() => {
+            dispatch(ui.setExerciseEditorLoading(false))
+        }))
+    }
 }

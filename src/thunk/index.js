@@ -3,6 +3,7 @@ import {
     deleteExercise,
     refreshExerciseHistory,
     refreshExerciseCategories,
+    prepareExerciseCreation,
 } from './exercises'
 
 export {
@@ -10,4 +11,5 @@ export {
     deleteExercise,
     refreshExerciseHistory,
     refreshExerciseCategories,
+    prepareExerciseCreation,
 }

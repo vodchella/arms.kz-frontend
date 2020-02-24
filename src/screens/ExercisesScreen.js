@@ -28,7 +28,8 @@ class ExercisesScreen extends Component {
     }
 
     addExercise = () => {
-        const { navigation } = this.props
+        const { navigation, prepareExerciseCreation } = this.props
+        prepareExerciseCreation()
         navigation.navigate(RouteNames.EXERCISE_EDITOR)
     }
 
@@ -120,6 +121,7 @@ const mapDispatchToProps = (dispatch) => ({
         refreshExercises: thunk.refreshExercises,
         deleteExercise: thunk.deleteExercise,
         refreshExerciseHistory: thunk.refreshExerciseHistory,
+        prepareExerciseCreation: thunk.prepareExerciseCreation,
     }, dispatch),
     dispatch
 })
