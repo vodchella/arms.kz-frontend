@@ -3,6 +3,7 @@ import * as actions from './ActionTypes'
 const initialState = {
     list: [],
     history: [],
+    categories: [],
 }
 
 export default function exercisesReducer(state = initialState, action) {
@@ -16,6 +17,11 @@ export default function exercisesReducer(state = initialState, action) {
         return {
             ...state,
             history: action.history,
+        }
+    case actions.EXERCISES_SET_CATEGORIES_LIST:
+        return {
+            ...state,
+            categories: action.categories,
         }
     default:
         return state

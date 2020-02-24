@@ -1,11 +1,13 @@
 import {
     refreshExercises,
     deleteExercise,
-    refreshExerciseHistory
+    refreshExerciseHistory,
+    refreshExerciseCategories,
 } from './exercises'
 
 export {
     refreshExercises,
     deleteExercise,
     refreshExerciseHistory,
+    refreshExerciseCategories,
 }

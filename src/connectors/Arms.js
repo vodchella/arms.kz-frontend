@@ -31,6 +31,11 @@ class Arms {
         requestArms(token, 'GET', `exercise/${exerciseId}/history`,
             onOk, onFail, refreshToken, onTokenRefresh)
     }
+
+    listExerciseCategories(token, onOk, onFail, refreshToken, onTokenRefresh) {
+        requestArms(token, 'GET', 'exercise-category/list',
+            onOk, onFail, refreshToken, onTokenRefresh)
+    }
 }
 
 export default new Arms()

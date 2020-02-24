@@ -8,6 +8,10 @@ const initialState = {
         id: '',
         caption: '',
     },
+    exerciseEditorInfo: {
+        id: '',
+        caption: '',
+    },
 }
 
 export default function uiReducer(state = initialState, action) {

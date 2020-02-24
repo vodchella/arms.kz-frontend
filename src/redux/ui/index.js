@@ -30,3 +30,13 @@ export function setExerciseHistoryInfo(id, caption) {
         }
     }
 }
+
+export function setExerciseEditorInfo(id, caption) {
+    return {
+        type: actions.UI_EXERCISE_EDITOR_INFO,
+        info: {
+            id,
+            caption,
+        }
+    }
+}

@@ -47,3 +47,14 @@ export function refreshExerciseHistory(exerciseId, exerciseName) {
         }
     )
 }
+
+export function refreshExerciseCategories() {
+    return worker(
+        arms.listExerciseCategories,
+        null,
+        {
+            onBeg: (dispatch) => dispatch(ex.setExerciseCategoriesList([])),
+            onOk: (categories, dispatch) => dispatch(ex.setExerciseCategoriesList(categories)),
+        }
+    )
+}
