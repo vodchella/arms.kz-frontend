@@ -15,6 +15,10 @@ const ROUTE_PROPS = {
         title: 'История',
         rightHeader: <></>,
     },
+    [RouteNames.EXERCISE_EDITOR]: {
+        title: 'Упражнение',
+        rightHeader: <></>,
+    },
     [RouteNames.WELCOME]: {
         title: 'Об arms.kz',
         rightHeader: <></>,

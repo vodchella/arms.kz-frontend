@@ -27,7 +27,10 @@ class ExercisesScreen extends Component {
         navigation.navigate(RouteNames.EXERCISE_HISTORY)
     }
 
-    addExercise = () => {}
+    addExercise = () => {
+        const { navigation } = this.props
+        navigation.navigate(RouteNames.EXERCISE_EDITOR)
+    }
 
     removeExercise = (exerciseId, exerciseName) => {
         const { deleteExercise } = this.props

@@ -14,6 +14,13 @@ export function setExerciseHistoryLoading(isLoading) {
     }
 }
 
+export function setExerciseEditorLoading(isLoading) {
+    return {
+        type: actions.UI_EXERCISE_EDITOR_LOADING,
+        isLoading
+    }
+}
+
 export function setExerciseHistoryInfo(id, caption) {
     return {
         type: actions.UI_EXERCISE_HISTORY_INFO,

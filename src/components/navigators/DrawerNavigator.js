@@ -4,6 +4,7 @@ import { createStackNavigator, CardStyleInterpolators } from 'react-navigation-s
 import WorkoutsScreen from '../../screens/WorkoutsScreen'
 import ExercisesScreen from '../../screens/ExercisesScreen'
 import ExerciseHistoryScreen from '../../screens/ExerciseHistoryScreen'
+import ExerciseEditorScreen from '../../screens/ExerciseEditorScreen'
 import DrawerContainer from '../DrawerContainer'
 import Header from '../Header'
 import HeaderRight from '../HeaderRight'
@@ -22,6 +23,13 @@ const exercisesStack = createStackNavigator({
         screen: ExerciseHistoryScreen,
         navigationOptions: {
             title: ROUTE_PROPS[RouteNames.EXERCISE_HISTORY].title,
+            cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
+        }
+    },
+    [RouteNames.EXERCISE_EDITOR]: {
+        screen: ExerciseEditorScreen,
+        navigationOptions: {
+            title: ROUTE_PROPS[RouteNames.EXERCISE_EDITOR].title,
             cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
         }
     },
