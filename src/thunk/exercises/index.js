@@ -30,7 +30,7 @@ export function deleteExercise(exerciseId) {
     )
 }
 
-export function refreshExerciseHistory(exerciseId, exerciseName) {
+export function refreshExerciseHistory(exerciseId) {
     return worker(
         arms.getExerciseHistory,
         exerciseId,
@@ -39,10 +39,7 @@ export function refreshExerciseHistory(exerciseId, exerciseName) {
                 dispatch(ui.setExerciseHistoryLoading(true))
                 dispatch(ex.setExerciseHistory([]))
             },
-            onOk: (history, dispatch) => {
-                dispatch(ui.setExerciseHistoryInfo(exerciseId, exerciseName))
-                dispatch(ex.setExerciseHistory(history))
-            },
+            onOk: (history, dispatch) => dispatch(ex.setExerciseHistory(history)),
             onFin: (dispatch) => dispatch(ui.setExerciseHistoryLoading(false)),
         }
     )

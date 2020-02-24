@@ -20,23 +20,3 @@ export function setExerciseEditorLoading(isLoading) {
         isLoading
     }
 }
-
-export function setExerciseHistoryInfo(id, caption) {
-    return {
-        type: actions.UI_EXERCISE_HISTORY_INFO,
-        info: {
-            id,
-            caption,
-        }
-    }
-}
-
-export function setExerciseEditorInfo(id, caption) {
-    return {
-        type: actions.UI_EXERCISE_EDITOR_INFO,
-        info: {
-            id,
-            caption,
-        }
-    }
-}

@@ -23,13 +23,18 @@ class ExercisesScreen extends Component {
 
     openExerciseHistory = (exerciseId, exerciseName) => {
         const { navigation, refreshExerciseHistory } = this.props
-        refreshExerciseHistory(exerciseId, exerciseName)
-        navigation.navigate(RouteNames.EXERCISE_HISTORY)
+        refreshExerciseHistory(exerciseId)
+        navigation.navigate(RouteNames.EXERCISE_HISTORY, { id: exerciseId, caption: exerciseName })
     }
 
     addExercise = () => {
         const { navigation } = this.props
         navigation.navigate(RouteNames.EXERCISE_EDITOR)
+    }
+
+    editExercise = (exerciseId, exerciseName) => {
+        const { navigation } = this.props
+        navigation.navigate(RouteNames.EXERCISE_EDITOR, { id: exerciseId, caption: exerciseName })
     }
 
     removeExercise = (exerciseId, exerciseName) => {
@@ -72,7 +77,11 @@ class ExercisesScreen extends Component {
                             )}
                             renderHiddenItem={({ item: exercise }) => (
                                 <View style={styles.swipeRowBack}>
-                                    <Button>
+                                    <Button
+                                        onPress={
+                                            () => this.editExercise(exercise.id, exercise.name)
+                                        }
+                                    >
                                         <IconForButton name={'settings'} />
                                     </Button>
                                     <Button

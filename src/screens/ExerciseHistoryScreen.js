@@ -12,7 +12,8 @@ const stub = () => {}
 
 class ExerciseHistoryScreen extends Component {
     render() {
-        const { info, history, isExerciseHistoryLoading } = this.props
+        const { navigation, history, isExerciseHistoryLoading } = this.props
+        const { params } = navigation.state
         const timeZone = RNLocalize.getTimeZone()
         return (
             <Container style={{ backgroundColor: Colors.SURFACE }}>
@@ -22,7 +23,7 @@ class ExerciseHistoryScreen extends Component {
                 {!isExerciseHistoryLoading && (
                     <View style={{ flex: 1 }}>
                         <ListItem key='first_key' itemDivider>
-                            <Text>{info.caption}</Text>
+                            <Text>{params.caption}</Text>
                         </ListItem>
                         <SwipeListView
                             data={history}
@@ -55,7 +56,6 @@ class ExerciseHistoryScreen extends Component {
 
 const mapStateToProps = state => ({
     isExerciseHistoryLoading: state.ui.isExerciseHistoryLoading,
-    info: state.ui.exerciseHistoryInfo,
     history: state.exercises.history,
 })
 
